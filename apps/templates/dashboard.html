@@ -1,5 +1,5 @@
 {% extends 'base_layout.html' %} 
-{% block content_withmenu %}
+{% block content_sidebar %}
     {% with messages = get_flashed_messages(with_categories=true)  %}
         {% if messages %}
             {% for category, message in messages %}
@@ -12,4 +12,4 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-{% endblock content_withmenu %}
+{% endblock content_sidebar %}
