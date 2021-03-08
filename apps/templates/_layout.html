@@ -60,7 +60,7 @@
     />
   </head>
 
-  {% if menu == 'sidebar'%}
+  {% if menu_type == 'sidebar'%}
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
       <!-- Navbar -->
@@ -80,7 +80,7 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a href="{{url_for('logout')}}" class="nav-link">Logout <i class="fas fa-th-large"></i></a>
+              <a href="{{url_for('logout')}}" class="nav-link"><i class="fas fa-sign-out-alt"> Logout</i></a>
             </li>
         </ul>
       </nav>
@@ -111,7 +111,7 @@
               />
             </div>
             <div class="info">
-              <a href="#" class="d-block">{{ current_user.username }}</a>
+              <a href="/account" class="d-block">{{ current_user.username }}</a>
             </div>
           </div>
 
@@ -123,11 +123,34 @@
               role="menu"
               data-accordion="false"
             >
-              <li class="nav-item has-treeview menu-open">
-                <a href="/dashboard" class="nav-link active">
+              <li class="nav-item has-treeview {% if menu=='Dashboard' %}menu-open{% endif %}">
+                <a href="/dashboard" class="nav-link {% if menu=='Dashboard' %}active{% endif %}">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>Dashboard</p>
                 </a>
+              </li>
+              <li class="nav-item has-treeview {% if menu=='Dataset' %}menu-open{% endif %}">
+                <a href="#" class="nav-link {% if menu=='Dataset' %}active{% endif %}">
+                  <i class="nav-icon fas fa-database"></i>
+                  <p>
+                    Dataset
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/datatrain" class="nav-link {% if submenu=='datatrain' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Data train</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/datatest" class="nav-link {% if submenu=='datatest' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Data test</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </nav>
@@ -181,7 +204,7 @@
     </div>
     <!-- ./wrapper -->
 
-    {% elif menu == 'topbar' %}
+    {% elif menu_type == 'topbar' %}
       <body class="hold-transition layout-top-nav">
       <div class="wrapper">
 
@@ -213,9 +236,9 @@
             <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
               <li class="nav-item">
               {% if current_user.is_authenticated %}
-                <a href="/dashboard" class="nav-link">Dashboard <i class="fas fa-th-large"></i></a>
+                <a href="/dashboard" class="nav-link"><i class="fas fa-th-large"> Dashboard</i></a>
               {% else %}
-                <a href="/login" class="nav-link">Login <i class="fas fa-th-large"></i></a>
+                <a href="/login" class="nav-link"><i class="fas fa-sign-in-alt"> Login</i></a>
               {% endif %}
               </li>
             </ul>

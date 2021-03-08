@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, flash, redirect, request
 from apps import app, db
 from apps.models.admin import Admin
-from apps.controllers.login import LoginForm
+from apps.controllers.account import LoginForm, UpdateUsernameForm, UpdatePasswordForm
 from flask_login import login_user, current_user, logout_user, login_required
 # from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
@@ -9,13 +9,13 @@ import hashlib
 
 @app.route("/")
 def index():
-    return render_template('index.html', menu='topbar')
+    return render_template('index.html', menu_type='topbar')
 
 
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template('dashboard.html', contentheader='Dashboard', menu='sidebar')
+    return render_template('dashboard.html', contentheader='Dashboard', menu='Dashboard', menu_type='sidebar')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -42,3 +42,37 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    form_username = UpdateUsernameForm()
+    form_password = UpdatePasswordForm()
+    if form_username.validate_on_submit():
+        current_user.username = form_username.username.data
+        db.session.commit()
+        flash('Your username has been update!', 'success')
+        return redirect(url_for('account'))
+    elif form_password.validate_on_submit():
+        hash_password = hashlib.md5(
+            form_password.new_password.data.encode('utf-8')).hexdigest()
+        current_user.password = hash_password
+        db.session.commit()
+        flash('Your password has been changed!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form_username.username.data = current_user.username
+    return render_template('account.html', contentheader='Account', menu_type='sidebar', form_username=form_username, form_password=form_password)
+
+
+@app.route('/datatrain')
+@login_required
+def datatrain():
+    return render_template('data_train.html', contentheader='Data Train', menu='Dataset', submenu='datatrain', menu_type='sidebar')
+
+
+@app.route('/datatest')
+@login_required
+def datatest():
+    return render_template('data_test.html', contentheader='Data Test', menu='Dataset', submenu='datatest', menu_type='sidebar')

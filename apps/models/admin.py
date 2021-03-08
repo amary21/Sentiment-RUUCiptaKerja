@@ -6,6 +6,7 @@ def load_user(user_id):
     return Admin.query.get(int(user_id))
 
 class Admin(db.Model, UserMixin):
+    __tablename__ = 'tb_admin'
     id_admin = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50))
     password = db.Column(db.String(50))
