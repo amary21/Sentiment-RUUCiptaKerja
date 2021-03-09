@@ -1,7 +1,9 @@
 from flask import Flask, render_template, url_for, flash, redirect, request
 from apps import app, db
 from apps.models.admin import Admin
+from apps.models.dataset import Dataset
 from apps.controllers.account import LoginForm, UpdateUsernameForm, UpdatePasswordForm
+from apps.controllers.dataset import DataTrainForm
 from flask_login import login_user, current_user, logout_user, login_required
 # from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
@@ -69,7 +71,50 @@ def account():
 @app.route('/datatrain')
 @login_required
 def datatrain():
-    return render_template('data_train.html', contentheader='Data Train', menu='Dataset', submenu='datatrain', menu_type='sidebar')
+    dataset = Dataset.query.all()
+    return render_template('data_train.html', contentheader='Data Train', menu='Dataset', submenu='datatrain', menu_type='sidebar', dataset=dataset)
+
+
+@app.route('/datatrain/new', methods=['GET', 'POST'])
+@login_required
+def datatrain_create():
+    form = DataTrainForm()
+    if form.validate_on_submit():
+        dataset = Dataset(id_admin=current_user.id_admin,tweet=form.tweet.data, sentimen=form.sentiment.data)
+        db.session.add(dataset)
+        db.session.commit()
+        flash('Dataset has been added', 'success')
+        return redirect(url_for('datatrain'))
+    return render_template('data_train_form.html', contentheader='Add New Data Train', menu='Dataset', submenu='datatrain', menu_type='sidebar', form=form)
+
+
+@app.route('/datatrain/update', methods=['GET', 'POST'])
+@login_required
+def datatrain_update():
+    id = request.args.get('id')
+    datatrain = Dataset.query.get_or_404(id)
+    form = DataTrainForm()
+    if form.validate_on_submit():
+        datatrain.tweet = form.tweet.data
+        datatrain.sentimen = form.sentiment.data
+        db.session.commit()
+        flash('Dataset has been updated', 'success')
+        return redirect(url_for('datatrain'))
+    elif request.method == 'GET':
+        form.tweet.data = datatrain.tweet
+        form.sentiment.data = datatrain.sentimen
+    return render_template('data_train_form.html', contentheader='Add New Data Train', menu='Dataset', submenu='datatrain', menu_type='sidebar', form=form)
+
+
+@app.route('/datatrain/delete')
+@login_required
+def datatrain_delete():
+    id = request.args.get('id')
+    datatrain = Dataset.query.get_or_404(id)
+    db.session.delete(datatrain)
+    db.session.commit()
+    flash('Dataset has been deleted!', 'success')
+    return redirect(url_for('datatrain'))
 
 
 @app.route('/datatest')
