@@ -1,0 +1,87 @@
+{% extends '_layout.html' %} 
+{% block content_sidebar %}
+    {% with messages = get_flashed_messages(with_categories=true)  %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{category}}">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <a href="/datatrain/new">
+        <button class="btn btn-sm btn-primary mb-3"><i class="fas fa-plus fa-sm"></i> Add Data</button>
+    </a>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                <h3 class="card-title">Dataset for data train</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tweet</th>
+                            <th class="text-center" width="100px">Sentiment</th>
+                            <th class="text-center" width="60px">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in dataset %}
+                            <tr>
+                                <td>{{data.tweet}}</td>
+                                <td> {% if data.sentimen == '0' %} Negatif {% else %} Positif {% endif %} </td>
+                                <td>
+                                    <a href="/datatrain/update?id={{data.id_dataset}}">
+                                        <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <a href="javascript:;" onclick="confirmDelete({{data.id_dataset}})">
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+
+<script>
+    //onclick hapus data guru
+    function confirmDelete(id_data) {
+        const href = Flask.url_for("datatrain_delete", {id: id_data});
+        console.log(href);
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "this dataset will be deleted",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.value) {
+                document.location.href = href;
+            }
+        });
+    }
+</script>
+{% endblock content_sidebar %}

@@ -1,0 +1,94 @@
+{% extends '_layout.html' %} 
+{% block content_sidebar %}
+    {% with messages = get_flashed_messages(with_categories=true)  %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{category}}">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Update Username</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" action="" method="post">
+            {{form_username.hidden_tag()}}
+            <div class="card-body">
+                <div class="form-group">
+                    {{ form_username.username.label(class="form-control-label") }}
+                    {% if form_username.username.errors %}
+                        {{ form_username.username(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form_username.username.errors %}
+                                <span>
+                                    {{error}}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form_username.username(class="form-control")}}
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                {{ form_username.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+    <!-- /.card -->
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">Change Password</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form role="form" action="" method="post">
+            {{form_password.hidden_tag()}}
+            <div class="card-body">
+                <div class="form-group">
+                    {{ form_password.new_password.label(class="form-control-label") }}
+                    {% if form_password.new_password.errors %}
+                        {{ form_password.new_password(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form_password.new_password.errors %}
+                                <span>
+                                    {{error}}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form_password.new_password(class="form-control")}}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_password.confirm_new_password.label(class="form-control-label") }}
+                    {% if form_password.confirm_new_password.errors %}
+                        {{ form_password.confirm_new_password(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form_password.confirm_new_password.errors %}
+                                <span>
+                                    {{error}}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form_password.confirm_new_password(class="form-control")}}
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                {{ form_password.submit(class="btn btn-danger") }}
+            </div>
+        </form>
+    </div>
+    <!-- /.card -->
+{% endblock content_sidebar %}

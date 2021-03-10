@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{ JSGlue.include() }}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+      {% if title %} {{ title }} {% else %} Analisis Sentimen {% endif %}
+    </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }} "
+    />
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{url_for('static', filename='plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <!-- Ionicons -->
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }} "
+    />
+    <!-- iCheck -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/icheck-bootstrap/icheck-bootstrap.min.css') }} "
+    />
+    <!-- JQVMap -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/jqvmap/jqvmap.min.css') }} "
+    />
+    <!-- Theme style -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='dist/css/adminlte.min.css') }} "
+    />
+    <!-- overlayScrollbars -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }} "
+    />
+    <!-- Daterange picker -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/daterangepicker/daterangepicker.css') }} "
+    />
+    <!-- summernote -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/summernote/summernote-bs4.css') }} "
+    />
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+      rel="stylesheet"
+    />
+  </head>
+
+  {% if menu_type == 'sidebar'%}
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="/" class="nav-link">Home</a>
+          </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a href="{{url_for('logout')}}" class="nav-link"><i class="fas fa-sign-out-alt"> Logout</i></a>
+            </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+          <img
+            src="{{url_for('static', filename='dist/img/AdminLTELogo.png')}}"
+            alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          <span class="brand-text font-weight-light">Analisis Sentimen</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+              <img
+                src="{{url_for('static', filename='dist/img/user-admin.png')}}"
+                class="img-circle elevation-2"
+                alt="User Image"
+              />
+            </div>
+            <div class="info">
+              <a href="/account" class="d-block">{{ current_user.username }}</a>
+            </div>
+          </div>
+
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <li class="nav-item has-treeview {% if menu=='Dashboard' %}menu-open{% endif %}">
+                <a href="/dashboard" class="nav-link {% if menu=='Dashboard' %}active{% endif %}">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-item has-treeview {% if menu=='Dataset' %}menu-open{% endif %}">
+                <a href="#" class="nav-link {% if menu=='Dataset' %}active{% endif %}">
+                  <i class="nav-icon fas fa-database"></i>
+                  <p>
+                    Dataset
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/datatrain" class="nav-link {% if submenu=='datatrain' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Data train</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/datatest" class="nav-link {% if submenu=='datatest' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Data test</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0 text-dark">{{contentheader}}</h1>
+              </div>
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            {% block content_sidebar %}{% endblock content_sidebar %}
+          </div>
+          <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <footer class="main-footer">
+        <strong
+          >Copyright &copy; 2014-2019
+          <a href="http://adminlte.io">AdminLTE.io</a>.</strong
+        >
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 3.0.1
+        </div>
+      </footer>
+
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    {% elif menu_type == 'topbar' %}
+      <body class="hold-transition layout-top-nav">
+      <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+          <div class="container">
+            <a href="/" class="navbar-brand">
+              <img src="{{url_for('static', filename='dist/img/AdminLTELogo.png')}}" alt="Analisis Logo" class="brand-image img-circle elevation-3"
+                  style="opacity: .8">
+              <span class="brand-text font-weight-light">Analisis Sentimen</span>
+            </a>
+            
+            <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+              <!-- Left navbar links -->
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a href="/" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">Contact</a>
+                </li>
+              </ul>
+
+            <!-- Right navbar links -->
+            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+              <li class="nav-item">
+              {% if current_user.is_authenticated %}
+                <a href="/dashboard" class="nav-link"><i class="fas fa-th-large"> Dashboard</i></a>
+              {% else %}
+                <a href="/login" class="nav-link"><i class="fas fa-sign-in-alt"> Login</i></a>
+              {% endif %}
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+          <!-- Content Header (Page header) -->
+          <div class="content-header">
+            <div class="container">
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <h1 class="m-0 text-dark"> {{contentheader}}</h1>
+                </div><!-- /.col -->
+              </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+          </div>
+          <!-- /.content-header -->
+
+          <!-- Main content -->
+          <div class="content">
+            <div class="container">
+              {% block content_topbar %}{% endblock content_topbar %}
+            </div><!-- /.container-fluid -->
+          </div>
+          <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+          <!-- Control sidebar content goes here -->
+          <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+          </div>
+        </aside>
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+          <!-- To the right -->
+          <div class="float-right d-none d-sm-inline">
+            Anything you want
+          </div>
+          <!-- Default to the left -->
+          <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+        </footer>
+      </div>
+      <!-- ./wrapper -->
+    {% else %} 
+      {% block content_notmenu %}{% endblock content_notmenu %} 
+    {% endif %}
+
+    <!-- jQuery -->
+    <script src="{{url_for('static', filename='plugins/jquery/jquery.min.js') }} "></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{{url_for('static', filename='plugins/jquery-ui/jquery-ui.min.js') }} "></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+      $.widget.bridge("uibutton", $.ui.button);
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="{{url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }} "></script>
+    <!-- DataTables -->
+    <script src="{{url_for('static', filename='plugins/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{url_for('static', filename='plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <!-- ChartJS -->
+    <script src="{{url_for('static', filename='plugins/chart.js/Chart.min.js') }} "></script>
+    <!-- Sparkline -->
+    <script src="{{url_for('static', filename='plugins/sparklines/sparkline.js') }} "></script>
+    <!-- JQVMap -->
+    <script src="{{url_for('static', filename='plugins/jqvmap/jquery.vmap.min.js') }} "></script>
+    <script src="{{url_for('static', filename='plugins/jqvmap/maps/jquery.vmap.usa.js') }} "></script>
+    <!-- jQuery Knob Chart -->
+    <script src="{{url_for('static', filename='plugins/jquery-knob/jquery.knob.min.js') }} "></script>
+    <!-- daterangepicker -->
+    <script src="{{url_for('static', filename='plugins/moment/moment.min.js') }} "></script>
+    <script src="{{url_for('static', filename='plugins/daterangepicker/daterangepicker.js') }} "></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="{{url_for('static', filename='plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }} "></script>
+    <!-- Summernote -->
+    <script src="{{url_for('static', filename='plugins/summernote/summernote-bs4.min.js') }} "></script>
+    <!-- Sweetalert2 -->
+    <script src="{{url_for('static', filename='plugins/sweetalert2/sweetalert2.all.min.js') }} "></script>
+    <!-- overlayScrollbars -->
+    <script src="{{url_for('static', filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }} "></script>
+    <!-- AdminLTE App -->
+    <script src="{{url_for('static', filename='dist/js/adminlte.js') }} "></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="{{url_for('static', filename='dist/js/pages/dashboard.js') }} "></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{url_for('static', filename='dist/js/demo.js') }} "></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        });
+    });
+</script>
+  </body>
+</html>
