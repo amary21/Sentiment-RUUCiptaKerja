@@ -43,7 +43,7 @@
                                     <a href="/datatrain/update?id={{data.id_dataset}}">
                                         <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
                                     </a>
-                                    <a href="javascript:;" onclick="confirmDelete({{data.id_dataset}})">
+                                    <a href="javascript:;" onclick="confirmDelete({{ data.id_dataset }})">
                                         <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                     </a>
                                 </td>
@@ -63,10 +63,9 @@
     <!-- /.content -->
 
 <script>
-    //onclick hapus data guru
+    //onclick hapus dataset
     function confirmDelete(id_data) {
         const href = Flask.url_for("datatrain_delete", {id: id_data});
-        console.log(href);
 
         Swal.fire({
             title: 'Are you sure?',
