@@ -76,14 +76,14 @@
             ></a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <a href="/" class="nav-link">Home</a>
+            <a href="{{url_for('main.index')}}" class="nav-link">Home</a>
           </li>
         </ul>
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a href="{{url_for('logout')}}" class="nav-link"><i class="fas fa-sign-out-alt"> Logout</i></a>
+              <a href="{{url_for('accounts.logout')}}" class="nav-link"><i class="fas fa-sign-out-alt"> Logout</i></a>
             </li>
         </ul>
       </nav>
@@ -114,7 +114,7 @@
               />
             </div>
             <div class="info">
-              <a href="/account" class="d-block">{{ current_user.username }}</a>
+              <a href="{{url_for('accounts.account')}}" class="d-block">{{ current_user.username }}</a>
             </div>
           </div>
 
@@ -127,7 +127,7 @@
               data-accordion="false"
             >
               <li class="nav-item has-treeview {% if menu=='Dashboard' %}menu-open{% endif %}">
-                <a href="/dashboard" class="nav-link {% if menu=='Dashboard' %}active{% endif %}">
+                <a href="{{url_for('dashboards.dashboard')}}" class="nav-link {% if menu=='Dashboard' %}active{% endif %}">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>Dashboard</p>
                 </a>
@@ -142,13 +142,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="/datatrain" class="nav-link {% if submenu=='datatrain' %}active{% endif %}">
+                    <a href="{{url_for('datasets.datatrain')}}" class="nav-link {% if submenu=='datatrain' %}active{% endif %}">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Data train</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="/datatest" class="nav-link {% if submenu=='datatest' %}active{% endif %}">
+                    <a href="{{url_for('datasets.datatest')}}" class="nav-link {% if submenu=='datatest' %}active{% endif %}">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Data test</p>
                     </a>
@@ -214,7 +214,7 @@
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
           <div class="container">
-            <a href="/" class="navbar-brand">
+            <a href="{{url_for('main.index')}}" class="navbar-brand">
               <img src="{{url_for('static', filename='dist/img/AdminLTELogo.png')}}" alt="Analisis Logo" class="brand-image img-circle elevation-3"
                   style="opacity: .8">
               <span class="brand-text font-weight-light">Analisis Sentimen</span>
@@ -228,7 +228,7 @@
               <!-- Left navbar links -->
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a href="/" class="nav-link">Home</a>
+                  <a href="{{url_for('main.index')}}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
                   <a href="#" class="nav-link">Contact</a>
@@ -239,9 +239,9 @@
             <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
               <li class="nav-item">
               {% if current_user.is_authenticated %}
-                <a href="/dashboard" class="nav-link"><i class="fas fa-th-large"> Dashboard</i></a>
+                <a href="{{url_for('dashboards.dashboard')}}" class="nav-link"><i class="fas fa-th-large"> Dashboard</i></a>
               {% else %}
-                <a href="/login" class="nav-link"><i class="fas fa-sign-in-alt"> Login</i></a>
+                <a href="{{url_for('accounts.login')}}" class="nav-link"><i class="fas fa-sign-in-alt"> Login</i></a>
               {% endif %}
               </li>
             </ul>
