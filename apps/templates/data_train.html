@@ -1,4 +1,4 @@
-{% extends '_layout.html' %} 
+{% extends 'base/layout.html' %} 
 {% block content_sidebar %}
     {% with messages = get_flashed_messages(with_categories=true)  %}
         {% if messages %}
@@ -12,9 +12,14 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <a href="{{url_for('datasets.datatrain_create')}}">
-        <button class="btn btn-sm btn-primary mb-3"><i class="fas fa-plus fa-sm"></i> Add Data</button>
-    </a>
+
+    <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modal-add-dataset">
+        <i class="fas fa-plus fa-sm"></i> Add Data
+    </button>
+
+    <button type="button" class="btn btn-sm btn-success mb-3 ml-1" data-toggle="modal" data-target="#modal-import-csv">
+        <i class="fas fa-file-csv fa-sm"></i> Import CSV
+    </button>
 
     <!-- Main content -->
     <section class="content">
@@ -40,9 +45,9 @@
                                 <td>{{data.tweet}}</td>
                                 <td> {% if data.sentimen == '0' %} Negatif {% else %} Positif {% endif %} </td>
                                 <td>
-                                    <a href="{{ url_for('datasets.datatrain_update', id=data.id_dataset) }}">
-                                        <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                                    </a>
+                                    <button id="updateDataset" type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-update-dataset" data-id="{{data.id_dataset}}" data-tweet="{{data.tweet}}" data-sentiment="{{data.sentimen}}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
                                     <a href="javascript:;" onclick="confirmDelete({{ data.id_dataset }})">
                                         <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                     </a>
@@ -62,6 +67,168 @@
     </section>
     <!-- /.content -->
 
+    <div class="modal fade" id="modal-import-csv">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Import datasets from CSV file</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form role="form" action="" method="post" enctype="multipart/form-data">
+                    {{form_importdataset.hidden_tag()}}
+                    <div class="modal-body">  
+                        <div class="form-group">
+                            {{ form_importdataset.csv_file.label(class="form-control-label") }}
+                            {% if form_importdataset.csv_file.errors %}
+                                {{ form_importdataset.csv_file(class="form-control is-invalid")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form_importdataset.csv_file.errors %}
+                                        <span>
+                                            {{error}}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_importdataset.csv_file(class="form-control")}}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        {{ form_importdataset.csv_submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal import dataset-->
+
+    <div class="modal fade" id="modal-add-dataset">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Data Train</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form role="form" action="" method="post">
+                    {{form_adddataset.hidden_tag()}}
+                    <div class="modal-body">  
+                        <div class="form-group">
+                            {{ form_adddataset.tweet.label(class="form-control-label") }}
+                            {% if form_adddataset.tweet.errors %}
+                                {{ form_adddataset.tweet(class="form-control is-invalid")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form_adddataset.tweet.errors %}
+                                        <span>
+                                            {{error}}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_adddataset.tweet(class="form-control")}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form_adddataset.sentiment.label(class="form-control-label") }}
+                            {% if form_adddataset.sentiment.errors %}
+                                {{ form_adddataset.sentiment(class="form-control is-invalid")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form_adddataset.sentiment.errors %}
+                                        <span>
+                                            {{error}}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_adddataset.sentiment(class="form-control")}}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        {{ form_adddataset.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal add dataset-->
+
+    <div class="modal fade" id="modal-update-dataset">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Data Train</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form role="form" action="" method="post">
+                    {{form_updatedataset.csrf_token()}}
+                    <div class="modal-body">
+                        {% if form_updatedataset.update_id.errors %}
+                            {{ form_updatedataset.update_id(class="form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form_updatedataset.update_id.errors %}
+                                    <span>
+                                        {{error}}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_updatedataset.update_id(class="form-control")}}
+                        {% endif %}  
+                        <div class="form-group">
+                            {{ form_updatedataset.update_tweet.label(class="form-control-label") }}
+                            {% if form_updatedataset.update_tweet.errors %}
+                                {{ form_updatedataset.update_tweet(class="form-control is-invalid")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form_updatedataset.update_tweet.errors %}
+                                        <span>
+                                            {{error}}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_updatedataset.update_tweet(class="form-control")}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form_updatedataset.update_sentiment.label(class="form-control-label") }}
+                            {% if form_updatedataset.update_sentiment.errors %}
+                                {{ form_updatedataset.update_sentiment(class="form-control is-invalid")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form_updatedataset.update_sentiment.errors %}
+                                        <span>
+                                            {{error}}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_updatedataset.update_sentiment(class="form-control")}}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        {{ form_updatedataset.update_submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal update dataset-->
+    
 <script>
     //onclick hapus dataset
     function confirmDelete(id_data) {
@@ -82,5 +249,15 @@
             }
         });
     }
+
+    $(document).on("click", "#updateDataset", function(){
+        let id = $(this).data('id');
+        let tweet = $(this).data('tweet');
+        let sentiment = $(this).data('sentiment');
+
+        $('.modal-body #update_id').val(id);
+        $('.modal-body #update_tweet').val(tweet);
+        $('.modal-body #update_sentiment').val(sentiment);
+    });
 </script>
 {% endblock content_sidebar %}
