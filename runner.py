@@ -19,12 +19,12 @@ class SentimentClassess(object):
         self.factory = StemmerFactory()
         self.stemmer = self.factory.create_stemmer()
         self.kamus = self.get_dictionary()
-        self.kamus_normal = self.get_dictionary_norm()
+        # self.kamus_normal = self.get_dictionary_norm()
 
     def get_dictionary(self):
         # Get dictionary file
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        dir_path = os.path.abspath(dir_path + "/data/" + "kata3karakter.csv")
+        dir_path = os.path.abspath(dir_path + "/data/" + "normalisasi.csv")
 
         df = pd.read_csv(dir_path, sep=';')
         dictlist = []
@@ -32,16 +32,16 @@ class SentimentClassess(object):
             dictlist.append([row[0], row[1]])
         return dictlist
 
-    def get_dictionary_norm(self):
-        # Get dictionary file
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        dir_path = os.path.abspath(dir_path + "/data/" + "katanormal.csv")
+    # def get_dictionary_norm(self):
+    #     # Get dictionary file
+    #     dir_path = os.path.dirname(os.path.realpath(__file__))
+    #     dir_path = os.path.abspath(dir_path + "/data/" + "katanormal.csv")
 
-        df = pd.read_csv(dir_path, sep=';')
-        dictlist = []
-        for row in df.values:
-            dictlist.append([row[0], row[1]])
-        return dictlist
+    #     df = pd.read_csv(dir_path, sep=';')
+    #     dictlist = []
+    #     for row in df.values:
+    #         dictlist.append([row[0], row[1]])
+    #     return dictlist
 
     def remove_pattern(self, tweet: str, pattern):
         r = re.findall(pattern, tweet)
@@ -66,12 +66,12 @@ class SentimentClassess(object):
                     word = value
                     break
 
-            for row in self.kamus_normal:
-                key = row[0]
-                value = row[1]
-                if word == key:
-                    word = value
-                    break
+            # for row in self.kamus_normal:
+            #     key = row[0]
+            #     value = row[1]
+            #     if word == key:
+            #         word = value
+            #         break
 
             word = word.replace("xyz", "")
             newwords.append(word)
@@ -142,15 +142,15 @@ class SentimentClassess(object):
         return stem_word
 
     def preproccessing(self):
-        df = pd.DataFrame(self.raw_data[['UserName', 'Text']])
+        df = pd.DataFrame(self.raw_data[['UserName', 'Handle','Text']])
         df['RemoveUser'] = np.vectorize(self.remove_pattern)(df['Text'], "(@\\w*)")
         df['RemoveSymbol'] = df["RemoveUser"].apply(lambda x: np.vectorize(self.remove_pattern)(x, "(#\\w*)"))
         df['RemoveSymbol'] = df['RemoveSymbol'].apply(
             lambda x: self.remove_emojis(self.remove_symbol(x))
         )
-        df.drop_duplicates(subset = "RemoveSymbol", keep = 'first', inplace = True)
-        df['TweetClean'] = df['RemoveSymbol'].apply(lambda x: self.clean_tweets(x))
-        df.to_csv("result.csv")
+        df.drop_duplicates(subset = "Text", keep = 'first', inplace = True)
+        # df['TweetClean'] = df['RemoveSymbol'].apply(lambda x: self.clean_tweets(x))
+        df.to_csv("dataset_mentah.csv")
 
     def doc_freq(self, word: str):
         DF = {}
@@ -164,7 +164,7 @@ class SentimentClassess(object):
     def main(self):
         import heapq
         load_data = pd.read_csv("result.csv")
-        load_data.dropna()
+        load_data = load_data.dropna()
         print(load_data)
         countDataset = load_data.shape[0]
         
@@ -223,5 +223,5 @@ class SentimentClassess(object):
         # print(most_freq)
 
 ob = SentimentClassess()
-ob.main()
+ob.preproccessing()
     

@@ -25,12 +25,14 @@ def create_app(config_class=Config):
     from apps.controllers.accounts.routes import accounts
     from apps.controllers.dashboards.routes import dashboards
     from apps.controllers.datasets.routes import datasets
+    from apps.controllers.bobot.routes import bobot
     from apps.controllers.main.routes import main
     from apps.controllers.errors.handlers import errors
 
     app.register_blueprint(accounts)
     app.register_blueprint(dashboards)
     app.register_blueprint(datasets)
+    app.register_blueprint(bobot)
     app.register_blueprint(main)
     app.register_blueprint(errors)
 
