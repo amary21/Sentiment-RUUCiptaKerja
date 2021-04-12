@@ -21,6 +21,7 @@ def login():
         admin = Admin.query.filter_by(
             username=form.username.data, password=hash_password).first()
         if admin:
+            print(form.remember.data)
             login_user(admin, remember=form.remember.data)
             flash(f'Selamat Datang {form.username.data}!', 'success')
             next_page = request.args.get('next')
