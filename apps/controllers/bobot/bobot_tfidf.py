@@ -50,7 +50,8 @@ class BobotTFIDF(object):
                 for kata in row['tweet_token']:
                     f_negatif = TFIDFNeg.query.filter_by(kata=kata).first()
                     if f_negatif:
-                        f_extraction = BobotIdf.query.filter_by(kata=kata).first()
+                        f_extraction = BobotIdf.query.filter_by(
+                            kata=kata).first()
 
                         f_negatif.df = f_extraction.df
                         f_negatif.idf = f_extraction.idf
