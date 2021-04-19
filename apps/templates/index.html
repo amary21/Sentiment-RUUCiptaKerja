@@ -30,12 +30,14 @@
     <!-- Template Main CSS File -->
     <link href="{{url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
 
+    <script src="{{url_for('static', filename='assets/vendor/jquery/jquery.min.js') }}"></script>
+
     <!-- =======================================================
   * Template Name: BizLand - v1.2.1
   * Template URL: https://bootstrapmade.com/bizland-bootstrap-business-template/
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    ======================================================== -->
 </head>
 
 <body>
@@ -48,7 +50,7 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                     <li class="active"><a href="/"><i class="fas fa-home mr-2"></i>Home</a></li>
-                    <li><a href="#dataset"><i class="fas fa-database mr-2"></i> Dataset</a></li>
+                    <!-- <li><a href="#dataset"><i class="fas fa-database mr-2"></i> Dataset</a></li> -->
                     <li>
                         {% if current_user.is_authenticated %}
                         <a href="{{url_for('dashboards.dashboard')}}"><i class="fas fa-th-large mr-2"> </i>Dashboard</a>
@@ -77,42 +79,31 @@
         <section id="dataset" class="featured-services">
             <div class="container" data-aos="fade-up">
                 <div class="section-title">
-                    <h3>Dataset</h3>
+                    <h3>Analysis Results</h3>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                    <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0">
                         <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
-                            <div class="icon"><i class="bx bxl-dribbble"></i></div>
-                            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-                            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias
-                                excepturi</p>
+                            <h4 class="title"><a href="#">Accuracy</a></h4>
+                            <div class="description" id="accuracy-value" style="width: 100%; height: 100%; position: absolute; top: 47%; left: 0; right:0; text-align: center;"></div>
+                            <canvas id="accuracy" style="min-height: 230px; height: 230px; max-height: 230px; max-width: 100%;"></canvas>
+                            <p class="description mt-1" id="accuracy-detail"></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                    <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0">
                         <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
-                            <div class="icon"><i class="bx bx-file"></i></div>
-                            <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
-                            <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                dolore</p>
+                            <h4 class="title"><a href="#">Dataset</a></h4>
+                            <canvas id="dataset-char" style="min-height: 230px; height: 230px; max-height: 230px; max-width: 100%;"></canvas>
+                            <p class="description mt-1">all datasets : {{dataset}}</p>
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                    <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0">
                         <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
-                            <div class="icon"><i class="bx bx-tachometer"></i></div>
-                            <h4 class="title"><a href="">Magni Dolores</a></h4>
-                            <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                officia</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-                        <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
-                            <div class="icon"><i class="bx bx-world"></i></div>
-                            <h4 class="title"><a href="">Nemo Enim</a></h4>
-                            <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                                blanditiis</p>
+                            <h4 class="title"><a href="#">Dataset Splitting</a></h4>
+                            <canvas id="splitdata" style="min-height: 230px; height: 230px; max-height: 230px; max-width: 100%;"></canvas>
+                            <p class="description mt-1">all datasets : {{dataset}}</p>
                         </div>
                     </div>
 
@@ -141,8 +132,117 @@
         <div id="preloader"></div>
         <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
+        <!-- script js -->
+        <script>
+            $(function(){
+                //DATA
+                var accuracy = {{accuracy}};
+                var precision = {{precision}};
+                var recall = {{recall}};
+                var dataset_positive = {{dataset_positive}};
+                var dataset_negative = {{dataset_negative}};
+                var dataTrain = {{data_train}};
+                var dataTest = {{data_test}};
+
+                //ACCURACY
+                var accuracyDetail = document.getElementById('accuracy-detail')
+                accuracyDetail.innerHTML = "precision : "+Math.round(precision)+"%, recall : "+Math.round(recall)+"%"
+                var donutChartCanvas = $('#accuracy').get(0).getContext('2d')
+                var dataLabel = document.getElementById('accuracy-value')
+                var donutData = {
+                    datasets: [
+                        {
+                            data: [accuracy,100-accuracy],
+                            backgroundColor : ['#3f72af','#dbe2ef'],
+                        }
+                    ]
+                }
+
+                var donutOptions     = {
+                    maintainAspectRatio : false,
+                    responsive : true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        onComplete: function() {
+                            dataLabel.innerHTML = "<h2>"+Math.round(accuracy)+"%</h2>";
+                        }
+                    },
+                    egend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    }
+                }
+                
+                var donutChart = new Chart(donutChartCanvas, {
+                    type: 'doughnut',
+                    data: donutData,
+                    options: donutOptions      
+                })
+
+                //DATASET
+                var dataset = $('#dataset-char').get(0).getContext('2d')
+                var datasetData = {
+                    labels: [
+                        'Dataset Positive',
+                        'Dataset Negative', 
+                    ],
+                    datasets: [
+                        {
+                            data: [dataset_positive,dataset_negative],
+                            backgroundColor : ['#3f72af','#dbe2ef'],
+                        }
+                    ]
+                }
+                
+                var datasetOptions     = {
+                    maintainAspectRatio : false,
+                    responsive : true,
+                    legend: {
+                        display: false
+                    }
+                }
+
+                var datasetChart = new Chart(dataset, {
+                    type: 'pie',
+                    data: datasetData,
+                    options: datasetOptions      
+                })
+
+                //PEMBAGIAN DATASET
+                var splitdataCanvas = $('#splitdata').get(0).getContext('2d')
+                var splitData = {
+                    labels: [
+                        'Data Train (80%)',
+                        'Data Test (20%)', 
+                    ],
+                    datasets: [
+                        {
+                            data: [dataTrain,dataTest],
+                            backgroundColor : ['#3f72af','#dbe2ef'],
+                        }
+                    ]
+                };
+                
+                var splitdataOptions     = {
+                    maintainAspectRatio : false,
+                    responsive : true,
+                    legend: {
+                        display: false
+                    }
+                }
+
+                var splitChart = new Chart(splitdataCanvas, {
+                    type: 'pie',
+                    data: splitData,
+                    options: splitdataOptions      
+                })
+            });
+        </script>
+
         <!-- Vendor JS Files -->
-        <script src="{{url_for('static', filename='assets/vendor/jquery/jquery.min.js') }}"></script>
         <script src="{{url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{url_for('static', filename='assets/vendor/jquery.easing/jquery.easing.min.js') }}"></script>
         <script src="{{url_for('static', filename='assets/vendor/php-email-form/validate.js') }}"></script>
@@ -152,6 +252,7 @@
         <script src="{{url_for('static', filename='assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
         <script src="{{url_for('static', filename='assets/vendor/venobox/venobox.min.js') }}"></script>
         <script src="{{url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
+        <script src="{{url_for('static', filename='plugins/chart.js/Chart.min.js') }} "></script>
 
         <!-- Template Main JS File -->
         <script src="{{url_for('static', filename='assets/js/main.js') }}"></script>

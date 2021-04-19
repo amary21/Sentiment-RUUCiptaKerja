@@ -32,7 +32,7 @@
             <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                <h3 class="card-title">Dataset for data train</h3>
+                <h3 class="card-title">Dataset for classification</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -48,17 +48,17 @@
                         {% for data in dataset %}
                             <tr>
                                 <td>{{data.tweet}}</td>
-                                <td> {% if data.sentimen == '0' %} Negatif {% else %} Positif {% endif %} </td>
-                                <td>
+                                <td class="text-center"> {% if data.sentimen == '0' %} Negatif {% else %} Positif {% endif %} </td>
+                                <td class="text-center">
                                     <!-- <button id="updateDataset" type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-update-dataset" data-id="{{data.id_dataset}}" data-tweet="{{data.tweet}}" data-sentiment="{{data.sentimen}}">
                                         <i class="fas fa-edit"></i>
                                     </button> -->
                                     <button id="viewDataset" type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-view-dataset" data-id="{{data.id_dataset}}" data-useraccount="{{data.user_account}}" data-tweet="{{data.tweet}}" data-cleantweet="{{data.clean_tweet}}" data-sentiment="{{data.sentimen}}">
-                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye"></i> Detail
                                     </button>
-                                    <a href="javascript:;" onclick="confirmDelete({{ data.id_dataset }})">
+                                    <!-- <a href="javascript:;" onclick="confirmDelete({{ data.id_dataset }})">
                                         <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                    </a>
+                                    </a> -->
                                 </td>
                             </tr>
                         {% endfor %}

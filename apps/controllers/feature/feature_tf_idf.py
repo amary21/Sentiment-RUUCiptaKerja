@@ -5,7 +5,7 @@ import ast
 import numpy as np
 import pandas as pd
 
-class Features(object):
+class TfidfFeature(object):
     def __init__(self):
         self.raw_data = db.session.query(Feature)
         self.df_tfidf = pd.read_sql(self.raw_data.statement, db.session.bind)

@@ -1,0 +1,273 @@
+{% extends 'base/layout.html' %} 
+{% block content_sidebar %}
+    <a href="javascript:;" onclick="getAnalysisProcess()">
+        <button class="btn btn-sm btn-outline-success mb-3 ml-1"><i class="fas fa-list-alt fa-sm"></i> Get Analysis Process</button>
+    </a>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- ACCURACY CHART -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Accuracy</h3>
+                </div>
+                <div class="card-body">
+                    <div id="accuracy-value" style="width: 100%; height: 100%; position: absolute; top: 50%; left: 0; right:0; text-align: center;">
+                    </div>
+                    <canvas id="accuracy" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <div class="col-md-6">
+            <!-- PERFORMANCE CHART -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Performance</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="performance" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <!-- PRIOR DATASET -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Datasets</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="dataset" style="min-height: 230px; height: 230px; max-height: 230px; max-width: 100%;"></canvas>
+                    <div>jumlah seluruh dataset : {{dataset}}</div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <div class="col-md-6">
+            <!-- PEMBAGIAN DATASET -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Pembagian Dataset</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="splitdata" style="min-height: 230px; height: 230px; max-height: 230px; max-width: 100%;"></canvas>
+                    <div>jumlah seluruh dataset : {{dataset}}</div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- PEMBAGIAN DATASET -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Word Cloud</h3>
+                </div>
+                <div class="card-body">
+                    <img src="{{url_for('static', filename='assets/img/word_cloud.png') }}" alt="" style="width:750px; text-align:center">
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+    <script>
+        function getAnalysisProcess() {
+            const href = Flask.url_for("analysis.analysis_process");
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "the analysis process will be carried out",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirm',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.location.href = href;
+                    Swal.fire({
+                        title: 'The Analysis Process Is Running',
+                        html: 'This process may take a while, please wait...',
+                        // timer: 2000,
+                        allowOutsideClick: false,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            // timerInterval = setInterval(() => {
+                            // const content = Swal.getContent()
+                            // if (content) {
+                            //     const b = content.querySelector('b')
+                            //     if (b) {
+                            //     b.textContent = Swal.getTimerLeft()
+                            //     }
+                            // }
+                            // }, 100)
+                        },
+                        // willClose: () => {
+                        //     clearInterval(timerInterval)
+                        // }
+                    }).then((result) => {
+                    /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('I was closed by the timer')
+                        }
+                    })
+                }
+            });
+        }
+
+        //chart klasifikasi
+        $(function () {
+            //DATA
+            var accuracy = {{accuracy}};
+            var precision = {{precision}};
+            var recall = {{recall}};
+            var dataset = {{dataset}};
+            var dataset_positive = {{dataset_positive}};
+            var dataset_negative = {{dataset_negative}};
+            var dataTrain = {{data_train}};
+            var dataTest = {{data_test}};
+
+            //ACCURACY
+            var donutChartCanvas = $('#accuracy').get(0).getContext('2d')
+            var dataLabel = document.getElementById('accuracy-value')
+            var donutData = {
+                datasets: [
+                    {
+                        data: [accuracy,100-accuracy],
+                        backgroundColor : ['#00a65a','#E2EAE9'],
+                    }
+                ]
+            }
+
+            var donutOptions     = {
+                maintainAspectRatio : false,
+                responsive : true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    onComplete: function() {
+                        dataLabel.innerHTML = "<h2>"+Math.round(accuracy)+"%</h2>";
+                    }
+                },
+            }
+            
+            var donutChart = new Chart(donutChartCanvas, {
+                type: 'doughnut',
+                data: donutData,
+                options: donutOptions      
+            })
+
+            //PERFORMANCE
+            var perform = $('#performance').get(0).getContext('2d')
+            var performData = {
+                labels:[
+                    "Accuracy",
+                    "Precission",
+                    "Recall"
+                ],
+                datasets: [{
+                    data:[accuracy,precision,recall],
+                    backgroundColor : ['#00a65a','#f56954','#00c0ef'],
+                    hoverBackgroundColor : ['#66a2eb','#fcce56','#3c8dbc'],
+                }]
+            }
+
+            var performOptions = {
+                maintainAspectRatio : false,
+                responsive : true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines : {
+                            display : true,
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines : {
+                            display : true,
+                        }
+                    }]
+                }
+            }
+
+            var performChart = new Chart(perform,{
+                type:'horizontalBar',
+                data:performData,
+                options:performOptions
+            })
+
+            //DATASET
+            var dataset = $('#dataset').get(0).getContext('2d')
+            var datasetData = {
+                labels: [
+                    'Dataset Positive',
+                    'Dataset Negative', 
+                ],
+                datasets: [
+                    {
+                        data: [dataset_positive,dataset_negative],
+                        backgroundColor : ['#00a65a','#f56954'],
+                    }
+                ]
+            }
+            var datasetOptions     = {
+                maintainAspectRatio : false,
+                responsive : true,
+            }
+
+            var datasetChart = new Chart(dataset, {
+                type: 'pie',
+                data: datasetData,
+                options: datasetOptions      
+            })
+
+            //PEMBAGIAN DATASET
+            var splitdataCanvas = $('#splitdata').get(0).getContext('2d')
+            var splitData = {
+                labels: [
+                    'Data Train (80%)',
+                    'Data Test (20%)', 
+                ],
+                datasets: [
+                    {
+                        data: [dataTrain,dataTest],
+                        backgroundColor : ['#00c0ef','#3c8dbc'],
+                    }
+                ]
+            };
+            
+            var splitdataOptions     = {
+                maintainAspectRatio : false,
+                responsive : true,
+            }
+
+            var splitChart = new Chart(splitdataCanvas, {
+                type: 'pie',
+                data: splitData,
+                options: splitdataOptions      
+            })
+
+        });
+    </script>
+{% endblock content_sidebar %}
