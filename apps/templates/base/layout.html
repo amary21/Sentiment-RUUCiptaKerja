@@ -342,14 +342,12 @@
     <script src="{{url_for('static', filename='dist/js/pages/dashboard.js') }} "></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{url_for('static', filename='dist/js/demo.js') }} "></script>
-    <!-- Icon ionic -->
-    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script>
       $(document).ready(function() {
           $('#example2').DataTable({
           "paging": true,
-          "lengthChange": false,
-          "searching": false,
+          "lengthChange": true,
+          "searching": true,
           "ordering": true,
           "info": true,
           "autoWidth": false,
