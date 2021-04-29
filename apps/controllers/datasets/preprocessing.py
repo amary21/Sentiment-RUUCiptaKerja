@@ -4,6 +4,7 @@ import re
 import string
 import pandas as pd
 import numpy as np
+
 from nltk.corpus import stopwords
 from nltk.tokenize import TweetTokenizer
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
@@ -13,21 +14,12 @@ from apps.models.dataset import Dataset
 
 stopwords_indonesia = stopwords.words('indonesian')
 
-# def LoadData(file_name):
-#     stream = io.StringIO(file_name.stream.read().decode("UTF8"), newline=None)
-#     # stream = io.TextIOWrapper(file_name.stream._file, "UTF8", newline=None)
-#     file_data = pd.read_csv(stream)
-#     data = pd.DataFrame(file_data[['tweet', 'label']])
-#     return data
-
-
 class Preprocessing(object):
     def __init__(self):
         self.factory = StemmerFactory()
         self.stemmer = self.factory.create_stemmer()
         self.kamus = self.__get_dictionary()
 
-    # Get dictionary file
     def __get_dictionary(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         dir_path = os.path.abspath(dir_path + "/utils/" + "normalisasi.csv")
@@ -46,7 +38,6 @@ class Preprocessing(object):
 
     def __remove_symbol(self, tweet: str):
         tweet = self.__remove_url(tweet)
-
         # get only alfabet
         pattern = re.compile(r'\b[^\d\W]+\b')
         newwords = []
@@ -69,14 +60,10 @@ class Preprocessing(object):
         # Remove additional white spaces
         text = re.sub('[\s]+', ' ', text)
         text = re.sub('[\n]+', ' ', text)
-
         # remove all url
         text = re.sub(r" ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", text)
-
         # remove email
         text = re.sub(r"[\w]+@[\w]+\.[c][o][m]", "", text)
-        # text = re.sub(r"[\w]+@[\w]+\.[c][o]", "", text)
-        # text = re.sub(r"[\w]+@[\w]+\.[o][r][g]", "", text)
         # remove text twit
         text = re.sub(r'((pic\.[^\s]+)|(twitter))', '', text)
         # remove mentions, hashtag and web
@@ -112,6 +99,29 @@ class Preprocessing(object):
                           u"\u3030"
                           "]+", re.UNICODE)
         return re.sub(emoj, '', data)
+    
+    def __concate_duplicate(self, tweet):
+        term = "a" + r"{3}"
+        rep = re.sub(term, " 3", tweet)
+        term = "i" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+        term = "u" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+        term = "e" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+        term = "o" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+
+        term = "c" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+        term = "k" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+        term = "w" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+        term = "h" + r"{3}"
+        rep = re.sub(term, " 3", rep)
+
+        return rep
 
     def __clean_tweets(self, tweet: str) -> str:
         # tokenize tweets
@@ -123,7 +133,6 @@ class Preprocessing(object):
         for word in tweet_tokens:
             if (word not in stopwords_indonesia and  # remove stopwords
                     word not in string.punctuation):  # remove punctuation
-                # tweets_clean.append(word)
                 tweets_clean.append(word)
 
         stem_word = self.stemmer.stem(" ".join(tweets_clean))  # stemming word
@@ -132,32 +141,33 @@ class Preprocessing(object):
     def from_csv(self, file_name, id_admin):
         raw_data = pd.read_csv(file_name)
         df = pd.DataFrame(raw_data[['user_account', 'tweet', 'label']])
-        df['remove_user'] = np.vectorize(
-            self.__remove_pattern)(df['tweet'], "(@\\w*)")
-        df['remove_symbol'] = df["remove_user"].apply(
-            lambda x: np.vectorize(self.__remove_pattern)(x, "(#\\w*)"))
-        df['remove_emojis'] = df['remove_symbol'].apply(
-            lambda x: self.__remove_emojis(self.__remove_symbol(x)))
-        df.drop_duplicates(subset="remove_emojis", keep='first', inplace=True)
-        df['tweet_clean'] = df['remove_emojis'].apply(
-            lambda x: self.__clean_tweets(x))
-        df = df.dropna(subset=["label", "tweet_clean"])
 
-        # df = df.dropna(axis=0, how="all").dropna(axis=1, how="all")
-        # df = df.dropna(subset=['tweet_clean'])
-        # df['label'] = df['label'].astype(int)
+        df['remove_user'] = np.vectorize(self.__remove_pattern)(df['tweet'], "(@\\w*)")
+        df['remove_symbol'] = df["remove_user"].apply(lambda x: np.vectorize(self.__remove_pattern)(x, "(#\\w*)"))
+        df['remove_duplicate_char'] = df['remove_symbol'].apply(self.__concate_duplicate)
+        df['remove_emojis'] = df['remove_duplicate_char'].apply(lambda x: self.__remove_emojis(self.__remove_symbol(x)))
+        
+        df.drop_duplicates(subset="remove_emojis", keep='first', inplace=True)
+        
+        df['tweet_clean'] = df['remove_emojis'].apply(lambda x: self.__clean_tweets(x))
+        df = df.dropna(subset=["label", "tweet_clean"])
 
         for i, row in df.iterrows():
             print(row['label'])
-            toint = ''
+            tostring = ''
             if row['label'] == 1.0:
-                toint = '1'
+                tostring = '1'
             else:
-                toint = '0'
+                tostring = '0'
 
             if row['tweet_clean'] != "":
                 row_data = Dataset(
-                    id_admin=id_admin, user_account=row['user_account'], tweet=row['tweet'], clean_tweet=row['tweet_clean'], sentimen=toint)
+                    id_admin=id_admin, 
+                    user_account=row['user_account'], 
+                    tweet=row['tweet'], 
+                    clean_tweet=row['tweet_clean'], 
+                    sentimen=tostring)
+                
                 db.session.add(row_data)
                 db.session.commit()
 

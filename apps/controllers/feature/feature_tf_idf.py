@@ -5,7 +5,7 @@ import ast
 import numpy as np
 import pandas as pd
 
-class Features(object):
+class TfidfFeature(object):
     def __init__(self):
         self.raw_data = db.session.query(Feature)
         self.df_tfidf = pd.read_sql(self.raw_data.statement, db.session.bind)
@@ -28,8 +28,6 @@ class Features(object):
                 TF_dict[term] += 1
             else:
                 TF_dict[term] = 1
-        for term in TF_dict:
-            TF_dict[term] = TF_dict[term] / len(document)
         return TF_dict
 
     def __calc_count_Dict(self, tfDict):
@@ -45,7 +43,7 @@ class Features(object):
     def __calc_IDF_Dict(self, __n_document, __DF):
         IDF_Dict = {}
         for term in __DF:
-            IDF_Dict[term] = np.log(__n_document / (__DF[term] + 1))
+            IDF_Dict[term] = np.log(__n_document / __DF[term])
         return IDF_Dict
 
     def __calc_TF_IDF(self, TF):

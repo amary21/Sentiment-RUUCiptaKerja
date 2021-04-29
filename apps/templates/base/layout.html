@@ -143,61 +143,25 @@
                 </a>
               </li>
               <li class="nav-item has-treeview {% if menu=='Dataset' %}menu-open{% endif %}">
-                <a href="#" class="nav-link {% if menu=='Dataset' %}active{% endif %}">
+                <a href="{{url_for('datasets.datatrain')}}" class="nav-link {% if menu=='Dataset' %}active{% endif %}">
                   <i class="nav-icon fas fa-database"></i>
                   <p>
                     Dataset
-                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{url_for('datasets.datatrain')}}" class="nav-link {% if submenu=='datatrain' %}active{% endif %}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Data train</p>
-                    </a>
-                  </li>
-                  <!-- <li class="nav-item">
-                    <a href="{{url_for('datasets.datatest')}}" class="nav-link {% if submenu=='datatest' %}active{% endif %}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Data test</p>
-                    </a>
-                  </li> -->
-                </ul>
               </li>
-              <li class="nav-item has-treeview {% if menu=='Bobot' %}menu-open{% endif %}">
-                <a href="#" class="nav-link {% if menu=='Bobot' %}active{% endif %}">
+              <li class="nav-item has-treeview {% if menu=='Feature' %}menu-open{% endif %}">
+                <a href="{{url_for('feature.view_df_idf_dict')}}" class="nav-link {% if menu=='Feature' %}active{% endif %}">
                   <i class="nav-icon fas fa-archive"></i>
                   <p>
-                    Bobot
-                    <i class="right fas fa-angle-left"></i>
+                    Feature
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{url_for('bobot.bobot_idf')}}" class="nav-link {% if submenu=='bobotidf' %}active{% endif %}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Bobot IDF</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{url_for('bobot.tfidf_positif')}}" class="nav-link {% if submenu=='tfidfpos' %}active{% endif %}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>TF-IDF Positif</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{url_for('bobot.tfidf_negatif')}}" class="nav-link {% if submenu=='tfidfneg' %}active{% endif %}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>TF-IDF Negatif</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
-              <li class="nav-item has-treeview {% if menu=='Dashboard' %}menu-open{% endif %}">
-                <a href="{{url_for('klasifikasi.klasifikasi_func')}}" class="nav-link {% if menu=='Dashboard' %}active{% endif %}">
+              <li class="nav-item has-treeview {% if menu=='analysis' %}menu-open{% endif %}">
+                <a href="{{url_for('analysis.analysis_func')}}" class="nav-link {% if menu=='analysis' %}active{% endif %}">
                   <i class="nav-icon fas fa-list-alt "></i>
-                  <p>Klasifikasi</p>
+                  <p>Analysis</p>
                 </a>
               </li>
             </ul>
@@ -378,14 +342,12 @@
     <script src="{{url_for('static', filename='dist/js/pages/dashboard.js') }} "></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{url_for('static', filename='dist/js/demo.js') }} "></script>
-    <!-- Icon ionic -->
-    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script>
       $(document).ready(function() {
           $('#example2').DataTable({
           "paging": true,
-          "lengthChange": false,
-          "searching": false,
+          "lengthChange": true,
+          "searching": true,
           "ordering": true,
           "info": true,
           "autoWidth": false,
