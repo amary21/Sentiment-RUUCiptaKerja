@@ -26,7 +26,7 @@ def create_app(config_class=Config):
     from apps.controllers.dashboards.routes import dashboards
     from apps.controllers.datasets.routes import datasets
     from apps.controllers.feature.routes import feature
-    from apps.controllers.analysis.routes import analysis
+    from apps.controllers.classification.routes import classification
     from apps.controllers.main.routes import main
     from apps.controllers.errors.handlers import errors
 
@@ -34,7 +34,7 @@ def create_app(config_class=Config):
     app.register_blueprint(dashboards)
     app.register_blueprint(datasets)
     app.register_blueprint(feature)
-    app.register_blueprint(analysis)
+    app.register_blueprint(classification)
     app.register_blueprint(main)
     app.register_blueprint(errors)
 

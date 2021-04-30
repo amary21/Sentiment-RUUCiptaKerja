@@ -73,9 +73,9 @@ class TfidfFeature(object):
             db.session.commit()
 
     def calc_tf_idf(self, data):
-        data['tweet_token'] = data['clean_tweet'].apply(self.__tokenize)
-        data['tf_dict'] = data['tweet_token'].apply(self.__calc_TF_Dict)
-        data['tfidf_dict'] = data['tf_dict'].apply(self.__calc_TF_IDF)
-        tfidf_vector = [self.__calc_TF_IDF_Vec(row) for row in data['tfidf_dict']]
+        data_token = data.apply(self.__tokenize)
+        data_tf_dict = data_token.apply(self.__calc_TF_Dict)
+        data_tfidf_dict = data_tf_dict.apply(self.__calc_TF_IDF)
+        tfidf_vector = [self.__calc_TF_IDF_Vec(row) for row in data_tfidf_dict]
         return tfidf_vector
 

@@ -158,11 +158,28 @@
                   </p>
                 </a>
               </li>
-              <li class="nav-item has-treeview {% if menu=='analysis' %}menu-open{% endif %}">
-                <a href="{{url_for('analysis.analysis_func')}}" class="nav-link {% if menu=='analysis' %}active{% endif %}">
-                  <i class="nav-icon fas fa-list-alt "></i>
-                  <p>Analysis</p>
+              <li class="nav-item has-treeview {% if menu=='classification' %}menu-open{% endif %}">
+                <a href="#" class="nav-link {% if menu=='classification' %}active{% endif %}">
+                  <i class="nav-icon fas fa-list-alt"></i>
+                  <p>
+                    Classification
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{url_for('classification.analysis_func')}}" class="nav-link {% if submenu=='analysis' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Analysis Result</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url_for('classification.datatest_func')}}" class="nav-link {% if submenu=='result' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Data Test Result</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </nav>

@@ -1,0 +1,53 @@
+{% extends 'base/layout.html' %} 
+{% block content_sidebar %}
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                    
+                                {% set sesuai=namespace(value=0) %}
+                                {% set tdk_sesuai=namespace(value=0) %}
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tweet</th>
+                                    <th class="text-center" width="60px">Analisis Manual</th>
+                                    <th class="text-center" width="60px">Analisis Sistem</th>
+                                    <th class="text-center" width="100px">Validasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for dt in data %}
+                                    <tr>
+                                        <td>{{dt.tweet}}</td>
+                                        <td class="text-center"> {% if dt.analysis_manual == 0 %} Negatif {% else %} Positif {% endif %} </td>
+                                        <td class="text-center"> {% if dt.analysis_system == 0 %} Negatif {% else %} Positif {% endif %} </td>
+                                        <td class="text-center">
+                                            {% if dt.analysis_system == dt.analysis_manual %}
+                                                {% set sesuai.value = sesuai.value + 1 %} 
+                                                <strong class="badge badge-success p-2"> Sesuai </strong> 
+                                            {% else %}
+                                                {% set tdk_sesuai.value = tdk_sesuai.value + 1 %} 
+                                                <strong class="badge badge-danger p-2"> Tidak Sesuai </strong> 
+                                            {% endif %} 
+                                        </td>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <strong class="badge badge-success p-2"> Sesuai : {{ sesuai.value }}</strong>  
+                        <strong class="badge badge-danger p-2"> Tidak Sesuai : {{ tdk_sesuai.value }}</strong> 
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+{% endblock content_sidebar %}

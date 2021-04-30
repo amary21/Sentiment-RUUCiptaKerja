@@ -2,7 +2,8 @@ from apps import db
 
 from flask import Blueprint, render_template
 from apps.models.dataset import Dataset
-from apps.controllers.analysis.confus import performance
+from apps.models.analysisresult import AnalysisResult
+from apps.controllers.classification.confus import performance
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -12,8 +13,10 @@ main = Blueprint('main', __name__)
 
 @main.route("/")
 def index():
-
-    accuracy, precision, recall = performance()
+    #performance dengan confuss matrix
+    data = db.session.query(AnalysisResult)
+    df_analysis = pd.read_sql(data.statement, db.session.bind)
+    accuracy, precision, recall = performance(df_analysis)
 
     dataset = db.session.query(db.func.count(Dataset.id_dataset))
     count_dataset = dataset.scalar()
