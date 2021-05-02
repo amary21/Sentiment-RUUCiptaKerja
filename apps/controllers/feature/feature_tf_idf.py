@@ -68,7 +68,7 @@ class TfidfFeature(object):
         TF_Dict = self.__calc_count_Dict(data["tf_dict"])
         IDF_Dict = self.__calc_IDF_Dict(len(data), TF_Dict)
         for key in IDF_Dict:
-            row_data = Feature(kata=key, df=TF_Dict[key], idf=IDF_Dict[key])
+            row_data = Feature(kata=key, df=TF_Dict[key], idf=float(IDF_Dict[key]))
             db.session.add(row_data)
             db.session.commit()
 

@@ -6,11 +6,12 @@ from apps import db
 
 from apps.models.dataset import Dataset
 from apps.models.feature import Feature
+from apps.models.analysisresult import AnalysisResult
 
 from apps.controllers.datasets.form import DataTrainForm, UpdateDataTrainForm, DataCSVForm, ViewDataTrainForm
 from apps.controllers.datasets.preprocessing import Preprocessing
 
-from flask import Blueprint, render_template, url_for, flash, redirect, request
+from flask import Blueprint, render_template, url_for, flash, redirect, request, make_response
 from flask_login import current_user, login_required
 
 
@@ -44,6 +45,17 @@ def datatrain():
 def datatrain_deleteall():
     db.session.query(Dataset).delete()
     db.session.query(Feature).delete()
+    db.session.query(AnalysisResult).delete()
     db.session.commit()
     flash('Dataset has been deleted!', 'success')
     return redirect(url_for('datasets.datatrain'))
+
+@datasets.route('/dataset/download')
+@login_required
+def download_csv():
+    data = db.session.query(Dataset)
+    df = pd.read_sql(data.statement, db.session.bind)
+    resp = make_response(df.to_csv())
+    resp.headers["Content-Disposition"] = "attachment; filename=export_dataset.csv"
+    resp.headers["Content-Type"] = "text/csv"
+    return resp

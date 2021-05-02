@@ -25,6 +25,7 @@ def view_df_idf_dict():
 @feature.route('/feature/process')
 @login_required
 def process_df_idf_dict():
+    db.session.query(Feature).delete()
     data = db.session.query(Dataset)
     dataframe = pd.read_sql(data.statement, db.session.bind)
     feature = TfidfFeature()
