@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import render_template, url_for, flash, redirect, request
 from apps import db
-from apps.models.admin import Admin
+from apps.models.user import User
 from apps.controllers.accounts.form import LoginForm, UpdateUsernameForm, UpdatePasswordForm
 from flask_login import login_user, current_user, logout_user, login_required
 import hashlib
@@ -18,11 +18,11 @@ def login():
     if form.validate_on_submit():
         hash_password = hashlib.md5(
             form.password.data.encode('utf-8')).hexdigest()
-        admin = Admin.query.filter_by(
+        user = User.query.filter_by(
             username=form.username.data, password=hash_password).first()
-        if admin:
+        if user:
             print(form.remember.data)
-            login_user(admin, remember=form.remember.data)
+            login_user(user, remember=form.remember.data)
             flash(f'Selamat Datang {form.username.data}!', 'success')
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('dashboards.dashboard'))

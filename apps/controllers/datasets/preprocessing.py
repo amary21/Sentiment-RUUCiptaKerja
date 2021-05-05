@@ -138,7 +138,7 @@ class Preprocessing(object):
         stem_word = self.stemmer.stem(" ".join(tweets_clean))  # stemming word
         return stem_word
 
-    def from_csv(self, file_name, id_admin):
+    def from_csv(self, file_name, id_user):
         raw_data = pd.read_csv(file_name)
         df = pd.DataFrame(raw_data[['user_account', 'tweet', 'label']])
 
@@ -162,7 +162,7 @@ class Preprocessing(object):
 
             if row['tweet_clean'] != "":
                 row_data = Dataset(
-                    id_admin=id_admin, 
+                    id_user=id_user, 
                     user_account=row['user_account'], 
                     tweet=row['tweet'], 
                     clean_tweet=row['tweet_clean'], 

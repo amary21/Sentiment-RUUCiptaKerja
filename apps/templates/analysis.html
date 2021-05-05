@@ -45,7 +45,7 @@
                 </div>
                 <div class="card-body center-block">
                     <div style="text-align:center">
-                        <img src="{{url_for('static', filename='assets/img/confus_matrix.png') }}" alt=""
+                        <img src="{{ imageconfus }}" alt=""
                             style="min-height: 380px; height: 380px; max-height: 380px; max-width: 100%;">
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="card-body">
                     <div style="text-align:center">
-                        <img src="{{url_for('static', filename='assets/img/word_cloud.png') }}" alt=""
+                        <img src="{{url_for('classification.visual_wordcloud') }}" alt=""
                             style="min-height: 40%; height: 40%; max-height: 40%; max-width: 100%;">
                     </div>
                 </div>

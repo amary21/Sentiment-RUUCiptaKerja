@@ -1,11 +1,10 @@
 from apps import db
-from flask import Blueprint, render_template, url_for, flash, redirect, request
+from flask import Blueprint, render_template, url_for, flash, redirect, request, send_file
 from flask_login import current_user, login_required
 
 from apps.controllers.classification.naivebayes import NaiveBayes
 from apps.controllers.feature.feature_tf_idf import TfidfFeature
-from apps.controllers.classification.confus import performance, cloud, confus_plot
-
+from apps.controllers.classification.confus import performance, cloud
 from apps.models.dataset import Dataset
 from apps.models.feature import Feature
 from apps.models.analysisresult import AnalysisResult
@@ -27,23 +26,20 @@ def analysis_func():
     if len(df_analysis) == 0:
         return redirect(url_for('classification.analysis_process'))
     else:
-        accuracy, precision, recall = performance(df_analysis)
+        accuracy, precision, recall, imageconfus = performance(df_analysis)
 
         # cek jumlah data negatif dan data positif
         dataset = db.session.query(db.func.count(Dataset.id_dataset))
         count_dataset = dataset.scalar()
-        count_negatif_dataset = dataset.filter(
-            Dataset.sentimen == "0").scalar()
-        count_positif_dataset = dataset.filter(
-            Dataset.sentimen == "1").scalar()
+        count_negatif_dataset = dataset.filter(Dataset.sentimen == "0").scalar()
+        count_positif_dataset = dataset.filter(Dataset.sentimen == "1").scalar()
 
         # cek jumlah data latih dan data uji
         dataset = db.session.query(Dataset)
         df = pd.read_sql(dataset.statement, db.session.bind)
-        x_train, x_test, _, _ = train_test_split(
-            df['clean_tweet'], df['sentimen'], test_size=0.2, shuffle=False)
+        x_train, x_test, _, _ = train_test_split(df['clean_tweet'], df['sentimen'], test_size=0.2, shuffle=False)
 
-        return render_template('analysis.html', contentheader='Analysis', menu='classification', submenu='analysis', menu_type='sidebar', accuracy=accuracy, precision=precision, recall=recall, dataset=count_dataset, dataset_positive=count_positif_dataset, dataset_negative=count_negatif_dataset, data_train=len(x_train), data_test=len(x_test))
+        return render_template('analysis.html', imageconfus=imageconfus, contentheader='Analysis', menu='classification', submenu='analysis', menu_type='sidebar', accuracy=accuracy, precision=precision, recall=recall, dataset=count_dataset, dataset_positive=count_positif_dataset, dataset_negative=count_negatif_dataset, data_train=len(x_train), data_test=len(x_test))
 
 
 @classification.route('/classification/process')
@@ -52,9 +48,6 @@ def analysis_process():
     # get dataset from db
     data = db.session.query(Dataset)
     dataframe = pd.read_sql(data.statement, db.session.bind)
-
-    # get wordcloud from clean dataset
-    cloud(dataframe['clean_tweet'])
 
     # split original dataset for insert data test to db
     _, x_tweet_test, _, _ = train_test_split(
@@ -72,9 +65,6 @@ def analysis_process():
     nb = NaiveBayes()
     model = nb.fit(ft_train, y_train)
     predict = nb.predict(ft_test)
-
-    # write confus plot
-    confus_plot(y_test, predict)
 
     # insert the result data into db, first delete the existing data
     db.session.query(AnalysisResult).delete()
@@ -94,3 +84,12 @@ def analysis_process():
 def datatest_func():
     data = AnalysisResult.query.all()
     return render_template('result.html', contentheader='Data Test Result', menu='classification', submenu='result', menu_type='sidebar', data=data)
+
+
+@classification.route('/classification/wordcloud')
+@login_required
+def visual_wordcloud():
+    dataset = db.session.query(Dataset)
+    df = pd.read_sql(dataset.statement, db.session.bind)
+    imgcloud = cloud(df['clean_tweet'])
+    return send_file(imgcloud, mimetype='image/png')

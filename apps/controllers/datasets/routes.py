@@ -21,6 +21,7 @@ datasets = Blueprint('datasets', __name__)
 @datasets.route('/dataset', methods=['GET', 'POST'])
 @login_required
 def datatrain():
+    print('id user', current_user.id_user)
     data = Dataset.query.all()
     preprocessing = Preprocessing()
 
@@ -33,7 +34,7 @@ def datatrain():
         file_name = form_importdataset.csv_file.data
         stream = io.StringIO(
             file_name.stream.read().decode("UTF8"), newline=None)
-        preprocessing.from_csv(stream, current_user.id_admin)
+        preprocessing.from_csv(stream, current_user.id_user)
         flash('Dataset has been imported', 'success')
         return redirect(url_for('datasets.datatrain'))
 

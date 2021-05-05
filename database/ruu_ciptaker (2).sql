@@ -24,73 +24,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_admin`
+-- Table structure for table `tb_user`
 --
 
-CREATE TABLE `tb_admin` (
-  `id_admin` int(11) NOT NULL,
+CREATE TABLE `tb_user` (
+  `id_user` int(11) NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tb_admin`
+-- Dumping data for table `tb_user`
 --
 
-INSERT INTO `tb_admin` (`id_admin`, `username`, `password`) VALUES
+INSERT INTO `tb_user` (`id_user`, `username`, `password`) VALUES
 (1, 'admin123', '0192023a7bbd73250516f069df18b500');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_confusmatrix`
---
-
-CREATE TABLE `tb_confusmatrix` (
-  `id_confusmatrix` int(11) NOT NULL,
-  `true_positive` int(50) NOT NULL,
-  `false_positive` int(50) NOT NULL,
-  `false_negative` int(50) NOT NULL,
-  `true_negative` int(50) NOT NULL,
-  `accuracy_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tb_confusmatrix`
---
-
-INSERT INTO `tb_confusmatrix` (`id_confusmatrix`, `true_positive`, `false_positive`, `false_negative`, `true_negative`, `accuracy_date`) VALUES
-(25, 89, 30, 21, 89, '2021-04-20 09:24:14'),
-(26, 92, 30, 22, 92, '2021-04-20 09:25:41'),
-(27, 82, 31, 23, 82, '2021-04-20 09:27:08'),
-(28, 29, 34, 22, 89, '2021-04-20 09:27:35'),
-(29, 30, 31, 20, 93, '2021-04-20 09:27:43'),
-(30, 29, 42, 15, 88, '2021-04-22 21:15:31'),
-(31, 25, 40, 17, 92, '2021-04-22 21:15:48'),
-(32, 39, 29, 18, 88, '2021-04-22 21:15:53'),
-(33, 20, 21, 28, 105, '2021-04-27 15:30:42'),
-(34, 20, 21, 28, 105, '2021-04-27 15:30:47'),
-(35, 20, 21, 28, 105, '2021-04-27 15:30:52'),
-(36, 20, 21, 28, 105, '2021-04-27 15:30:58'),
-(37, 20, 21, 28, 105, '2021-04-27 15:32:00'),
-(38, 20, 21, 28, 105, '2021-04-27 15:34:34'),
-(39, 20, 21, 28, 105, '2021-04-27 21:12:06'),
-(40, 20, 21, 28, 105, '2021-04-27 21:14:03'),
-(41, 20, 21, 28, 105, '2021-04-27 21:15:30'),
-(42, 32, 44, 43, 142, '2021-04-27 21:44:05'),
-(43, 18, 23, 28, 105, '2021-04-27 21:44:24'),
-(44, 18, 23, 27, 106, '2021-04-27 21:44:34'),
-(45, 20, 21, 28, 105, '2021-04-27 21:44:44'),
-(46, 20, 21, 29, 104, '2021-04-27 21:44:54'),
-(47, 20, 21, 28, 105, '2021-04-27 21:45:05'),
-(48, 20, 21, 29, 104, '2021-04-27 21:45:14'),
-(49, 18, 23, 27, 106, '2021-04-27 21:45:22'),
-(50, 18, 23, 29, 104, '2021-04-27 21:45:31'),
-(51, 19, 22, 28, 105, '2021-04-27 21:45:39'),
-(52, 16, 25, 29, 104, '2021-04-27 21:45:53'),
-(53, 18, 23, 28, 105, '2021-04-27 21:46:05'),
-(54, 18, 23, 28, 105, '2021-04-27 21:46:15'),
-(55, 20, 21, 28, 105, '2021-04-27 21:46:29');
 
 -- --------------------------------------------------------
 
@@ -100,7 +48,7 @@ INSERT INTO `tb_confusmatrix` (`id_confusmatrix`, `true_positive`, `false_positi
 
 CREATE TABLE `tb_dataset` (
   `id_dataset` int(11) NOT NULL,
-  `id_admin` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `user_account` varchar(50) NOT NULL,
   `tweet` text CHARACTER SET utf8 NOT NULL,
   `clean_tweet` text NOT NULL,
@@ -108,10 +56,204 @@ CREATE TABLE `tb_dataset` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Table structure for table `tb_anaysisresult`
+--
+
+CREATE TABLE `tb_anaysisresult` (
+  `id_anaysisresult` int(11) NOT NULL,
+  `tweet` text NOT NULL,
+  `analysis_manual` int(11) NOT NULL,
+  `analysis_system` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_anaysisresult`
+--
+
+INSERT INTO `tb_anaysisresult` (`id_anaysisresult`, `tweet`, `analysis_manual`, `analysis_system`) VALUES
+(1297, 'Sudah diringkas oleh para guru besar hukum UGM.\"\n\nLbh 90% rakyat indonesia blm mbaca draft UU Cipta Kerja. Siapa yg betah dan kuat menelaah dan mbaca 905 halaman UU. FH UGM mnyusun \"Catatan Kritis & Rekomendasi Trhadap RUU Cipta Kerja\".', 0, 0),
+(1298, 'Membalas \n@katzenjammer89\n dan \n@HeriSahaja1Kalau emang mereka di anggap sebagai pemicu demo dan kericuhan, kenapa anggota DPR pencutus RUU cipta kerja gak sekalian di tangkap juga, justru merekalah sumber adanya demo penolakan di mana mana.', 0, 0),
+(1299, 'TESTIMONI JASA TUGAS HUKUM \nTugas: Analisis RUU Cipta Kerja\nKampus: Universitas Sebelas Maret\nSemester: 3', 1, 1),
+(1300, 'Membalas \n@bijikambinggkek ruu cipta kerja aja berat sebelah', 0, 0),
+(1301, 'Said memprediksi Fadli Zon bersedia ikut tanda tangan setuju jika PKS dan Demokrat menggagas pembentukan RUU Pencabutan Cipta Kerja. #FadliZonSaid: Fadli Zon Mungkin Mau Ikut Tanda Tangan Usulan RUU Pencabutan Ciptaker\nSaid memprediksi Fadli Zon bersedia ikut tanda tangan setuju jika PKS dan Demokrat menggagas pembentukan RUU Pencabutan Cipta Kerja.\nm.jpnn.com', 1, 0),
+(1302, '#OmnibusLawBasmiKorupsi\nOmnibus Law RUU Cipta Kerja Menawarkan perampingan regulasi sbg solusi peraturan yang tumpang tindihDede Budhyarto dan 4 lainnya', 1, 1),
+(1303, 'Wakil Ketua DPR Ngaku Tidak Baca Seluruh Draf RUU Cipta Kerja \"Itu Bagian Panja\"Wakil Ketua DPR Ngaku Tidak Baca Seluruh Draf RUU Cipta Kerja \"Itu Bagian Panja\"\nSilakan baca artikel Wakil Ketua DPR Ngaku Tidak Baca Seluruh Draf RUU Cipta Kerja \"Itu Bagian Panja\" ini selengkapnya di SWARAKYAT MEDIA\nswarakyat.com', 0, 0),
+(1304, 'Membalas \n@MataNajwa\n dan \n@txtdrpemerintahBanyak yang gasadar kalau ruu cipta kerja ini heneran mengurangi pengangguran, nih gue jelasin; ruu disahkan memang biyar kita demo >> demo rusuh >> kena corona mati semua >> pengangguran berkurang.\nSOLUTIF :3', 0, 0),
+(1305, 'Pembahasan RUU Cipta kerja dinilai tertutup dan tidak melibatkan banyak kelompok masyarakat.Pembahasan RUU Cipta Kerja Dinilai Cacat Prosedur karena Tertutup dari Publik\nPembahasan RUU Cipta kerja dinilai tertutup dan tidak melibatkan banyak kelompok masyarakat.\nnasional.kompas.com', 0, 1),
+(1306, 'Nasrudin juga mengklaim pembahasan kluster ketenagakerjaan pada RUU Cipta Kerja juga telah melibatkan kelompok buruh.Kemenkumham Klaim Penyusunan RUU Cipta Kerja Dilakukan Terbuka\nNasrudin juga mengklaim pembahasan kluster ketenagakerjaan pada RUU Cipta Kerja juga telah melibatkan kelompok buruh.\nnasional.kompas.com', 1, 1),
+(1307, '#OmnibusLawBasmiKorupsi\n\nSebelum disahkan menjadi UU, RUU Cipta Kerja sdh melalui uji publik dgn melibatkan banyak unsur yg berkompeten di bidang ketenagakerjaan.\nBahwa UU Cipta Kerja dpt menjadi penangkal PHK, krn pihak pengusaha tdk bisa lagi semena² memPHK pekerjanya.', 1, 1),
+(1308, 'Membalas \n@geloracoHarusnya demi kemanusian tunda  dulu RUU cipta kerja dan jangang ada penangkapan pengeritik penguasa', 1, 0),
+(1309, 'Bukan ranah Presiden untuk memberikan perintah kepada Gubernur agar tidak menolak atas pengesahan RUU Cipta Kerja. Namun sebaliknya, menjadi ranah Gubernur untuk tidak menerima atas pengesahan RUU tersebutSikap Gubernur dan UU Cipta Kerja | GEOTIMES\nPengesahan Rancangan Undang-Undang (RUU) “Omnibus Law” Cipta Kerja tanggal 5 Oktober 2020, menuai kontroversi dari berbagai kalangan. Catatan buruk dalam proses legislasi tersebut, terlihat dari...\ngeotimes.co.id', 0, 1),
+(1310, '6. menteri terkait dengan menyampaikan surat presiden, naskah RUU Cipta Kerja, serta naskah akademik yg menyertainya kepada Ketua dan Wakil Ketua \n@dpr_ri\n tanggal 12 Februari 2020.\n.\n#KumhamPasti\n#OmnibusLawTaatProsedural\n#Kumham22', 1, 1),
+(1311, '5. melalui surat nomor: R-06/Pres/02/2020 tanggal 7 Februari 2020 menyampaikan secara resmi RUU Cipta Kerja kepada Ketua \n@dpr_ri\n untuk dibahas dalam sidang DPR guna mendapatkan persetujuan dengan prioritas utama. Surat tersebut ditindaklanjuti Menko \n@perekonomianri\n bersama', 1, 1),
+(1312, '4. Pada 27 Januari 2020, Menteri \n@perekonomianri\n menyampaikan draft RUU Cipta Lapangan Kerja dan naskah akademik yang menyertainya kepada Presiden \n@jokowi\n melalui surat nomor: PH.2.1-15/M.EKON/01/2020. Kemudian Presiden \n@jokowi', 1, 1),
+(1313, '2. kabinet, rapat koordinasi, dan rapat di level teknis kementerian/lembaga. Secara resmi, Menteri \n@perekonomianri\n telah menetapkan Panitia Antar Kementerian dan/atau Antar NonKementerian dalam Penyusunan RUU tentang Cipta Lapangan Kerja pada tanggal 23 Oktober 2019. Pembahasan', 1, 1),
+(1314, '1. #SahabatPengayoman, sekarang lagi rame nih ya bahas Penyusunan RUU Cipta Kerja. Kalian tau ngga, kalo penyusunan RUU ini telah melalui proses yang panjang lho. Penyusunan awal substansi RUU ini telah dilakukan pada level kebijakan, yaitu pada sidang kabinet/rapat terbatas', 1, 1),
+(1315, '2. Secara resmi menteri \n@PerekonomianRI\n telah menetapkan Panitia Antar Kementerian dan/atau Antar Non Kementerian dalam penyusunan RUU tentang Cipta Lapangan Kerja pada tanggal 23 Oktober 2019 yang dipimpin Sekretaris Menko\n\n#KumhamPasti \n#OmnibusLawTaatProsedural \n#Kumham22', 1, 1),
+(1316, 'Pantes aja banyak Kepala Daerah yg menolak OBL.\n\nDiatur di RUU Cipta Kerja, Ini Sanksi Kepala Daerah yang Tak Layani InvestorDiatur di RUU Cipta Kerja, Ini Sanksi Kepala Daerah yang Tak Layani Investor - Kompas.com\nRUU Cipta Kerja mengatur sanksi kepala daerah yang tak melayani investor.\namp.kompas.com', 0, 1),
+(1317, 'Buruh diuntungkan dengan UU Cipta Kerja #OmnibusLaw \n#ruuciptakerja', 1, 1),
+(1318, 'PKS Menilai Celah Liberalisasi UU Cipta Kerja Hambat BUMN Pertahanan #8ukaSindonews #BangkitdariPandemi\n#ruuciptakerja \n@PKSejahtera\n @FPKSDPRRI', 0, 0),
+(1319, 'Jadi bukan lembaga pemberantasan Korupsi yang di lemahkan dengan ada nya RUU Cipta Kerja....melainkan para Mafia pelaku korupsi...\n\n#OmnibusLawBasmiKorupsi', 1, 1),
+(1320, 'Membalas \n@tonykojansow\n dan \n@PolhukamRILawan korupsi dengan RUU Cipta Kerja #OmnibusLawBasmiKorupsi', 1, 0),
+(1321, 'Tolong dibaca!!!#OmnibusLawUntungkanBuruh #OmnibusLaw #ruuciptakerja', 1, 0),
+(1322, 'anjngTweet Kutipan\nCeluluk\n@Tudetu_\n · 16 Okt\nMembalas @jek___\nAku Hindu\n#ceritajumatan', 0, 0),
+(1323, 'Omnibuslaw RUU CIPTA KERJA menawarkan perampingan regulasi sebagai solusi peraturan yg tumpang tindih di berbagai sektor..\n#OmnibusLawBasmiKorupsi', 1, 1),
+(1324, 'Tokoh KAMI Ditangkapi, \n@fadlizon\n  : Kemenkumham Lepaskan 30.000 Napi, Kini Tangkapi Tokoh KAMI,\n#KAMI #fadlizon #Demo\n#ruuciptakerjaTokoh KAMI Ditangkapi, Fadli Zon : Kemenkumham Lepaskan 30.000 Napi, Kini Tangkapi Tokoh KAMI, -...\nTokoh KAMI Ditangkapi, Fadli Zon : Awal April 2020, Kemenkumham lepaskan 30.000 Napi, Kini menangkapi Tokoh dan Ribuan Demonstran\nbagikanberita.pikiran-rakyat.com', 1, 1),
+(1325, 'Pada draf RUU Cipta Kerja, pemerintah memberikan kesempatan bekerja sama dengan perguruan tinggi asing untuk meningkatkan kualitas Pendidikan dalam negeri #NyatanyaJadiAnakRumahan #FixOmnibusBaik', 1, 1),
+(1326, 'Membalas \n@pajohnnyseoRyo udah selesai baca dan analisis RUU cipta kerja, mau kerjain soal stan bareng\" ga daeun? Ryo kemaren dikasi buku soal sama papa', 1, 0),
+(1327, 'Ketidakterbukaan jadi Penyebab Hoaks RUU Cipta Kerja? (Part 5) | Mata Najwa https://youtu.be/YnrNTNZ8okw lewat \n@YouTubeKetidakterbukaan jadi Penyebab Hoaks RUU Cipta Kerja? (Part 5) | Mata...\nCipta Kerja: Mana Fakta Mana Dusta (Part 5) Simpang siur dan tiadanya sosialisasi yang mengenai naskah RUU Cipta Kerja bikin publik bingung. Zainal Arifin Mo...\nyoutube.com', 1, 1),
+(1328, 'Untuk Teman2 Yg Lagi Demo Jgn Rusuh Rusuh, Fasilitas Umum Itu Punya Kita Bersama Jadi Mari Kita Jaga Sama sama Fasilitas Yg Ada. \n#MahasiswaBergerak #MahasiswaMelawan #MahasiswaAtauPerusuh #ruuciptakerja #DPRPengkhianatRakyat #dprimpostor #BuruhMenggugatUUCiptaKerja #jakarta', 1, 1),
+(1329, 'dan menurut mereka RUU Cipta Kerja lebih urgent disahkan ketimbang RUU PKS.  Tweet Kutipan\nKalis Mardiasih\n@mardiasih\n · 16 Okt', 0, 0),
+(1330, 'Mungkin threat yang harus diwaspadai hanyalah apakah redaksi melalui UU tersebut dapat ditransisikan sebagai sebuah acceptable concept pada praktiknya. Selepas dari hal itu, konsep pada RUU Cipta Kerja merupakan nilai tambah dari landasan hukum Koperasi dan UMKM sebelumnya.', 1, 1),
+(1331, 'Iya sih, aku lebih setuju RUU PKS > UU Cipta Kerja yang duluan sah.Tweet Kutipan\nKalis Mardiasih\n@mardiasih\n · 16 Okt', 1, 0),
+(1332, 'Baca dulu RUU nya dgn lengkap jgn salah kaprak dgn UU Cipta kerja kalau dri yg telah Saya baca bgus buat rakyat dan negara #RakyatButuhUUCiptaKerja', 1, 0),
+(1333, 'Membalas \n@fudridriaaa____PERBEDAAN SOSIAL BUDAYA ANTARA \"pengesahan ruu cipta kerja\" dan \"demo ruu cipta kerja\" ', 1, 0),
+(1334, 'Kelemahan dari demonstrasi dan unjuk rasa terhadap perilisan RUU Cipta Kerja adalah kurangnya objektivitas beberapa kelompok, termasuk buruh, pegiat UMKM, dan mahasiswa dalam menilai RUU tersebut.', 1, 1),
+(1335, 'Apalagi para buruh maupun aktivis lingkungan dan pihak lain mempunyai kedudukan hukum (legal standing) sebagai pihak yang dirugikan dengan berlakunya RUU Cipta Kerja ini. Maka pilihan judicial review merupakan hal yang paling rasional.', 0, 0),
+(1336, 'untuk itu meminta Presiden mengeluarkan Perppu adalah hal yang paling irasional.\n\nJudicial Review oleh Mahkamah Konstitusi\n\nUpaya hukum yang bisa dilakukan oleh buruh mapun pihak yang merasa dirugikan dengan terbitnya RUU Cipta Kerja ini bisa dilakukan dengan', 1, 0),
+(1337, 'akan sangat mengeherankan jika pemerintah mengeluarkan Perppu untuk undang-undang atas inisiatifnya sendiri. Dan pemerinah sudah jelas menyatakan RUU Cipta Kerja ini bisa mendatangkan investor dan lapangan kerja baru,', 0, 1),
+(1338, 'maka terciptalah RUU Cipta Kerja ini. dengan adanya RUU ini diharapkan investor bisa berdatangan dan lapangan pekerjaan terbuka lebar.\n\nItu artinya pembentukan Perppu merupakan jalan yang irasional, mengingat RUU Cipta Kerja ini merupakan inisiatif dari pemerintah sendiri,', 1, 1),
+(1339, 'Dari ketiga kategori terebut jelaslah kategori ketiga yang paling rasional.\n\nRUU CIpta Kerja merupakan aturan yang dinilai kurang memadai untuk mengakomodir beberapa permasalah seperti ketenagakerjaan ataupun masalah lingkungan dan perizinan.', 0, 1),
+(1340, 'Tuntutan para buruh tidak berubah, yaitu menolak RUU Cipta Kerja, undang-undang sapu jagad tersebut dinilai oleh para buruh telah merugikan mereka dan merampas sebagian hak mereka yang sudah dijamin dalam undang-undang tenaga kerja.', 0, 0),
+(1341, 'Unjuk rasa tersebut tidak lain untuk menuntut keadilan dan hak-hak buruh yang dinilai telah dirampas oleh RUU Cipta Kerja tersebut.', 0, 0),
+(1342, 'Gelombang penolakan RUU Cipta Kerja masih terus terjadi di beberapa daerah di Indonesia, bahkan yang ditandai dengan perusakan fasilitas umum dan juga aksi vandalisme.', 0, 1),
+(1343, 'Salam hangat,⁣\nPerhimpunan Pelajar Indonesia Dunia⁣ (PPI Dunia)\nSurat Pernyataan Sikap⁣\nPPI Dunia atas⁣ Undang-Undang Cipta Kerja⁣\n⁣\n#ppidunia⁣\n#Berkarisma ⁣\n#oisaa⁣\n#ruuciptakerja ⁣\n#uuciptakerja', 1, 1),
+(1344, 'Membalas \n@tjhinfar21\n dan \n@jokowiUU ciptakerja merupakan usaha pemerintah untuk mensejahterahkan rakyatnya, beberapa UU juga diciptakan untuk kemajuan bangsa, mari kita dukung RUU BPIP untuk pancasila yang kuat bebas dari rongrongan idiologi lain \n\n#BPIPperluPayungHukum', 1, 1),
+(1345, 'KemenkopUKM: RT \n@Kemenkumham_RI\n: #SahabatPengayoman, sekarang lagi rame nih ya bahas Penyusunan RUU Cipta Kerja. Kalian tau ngga, kalo penyusunan RUU ini telah melalui proses yang panjang lho. Coba disimak thread Yomin ini ya\n\n#KumhamPasti\n#OmnibusLawTaa… https://twitter.com/KemenkopUKM/status/1316695940577652737…Tweet Kutipan\n#KamiPasti\n@Kemenkumham_RI\n · 15 Okt\n#SahabatPengayoman, sekarang lagi rame nih ya bahas Penyusunan RUU Cipta Kerja. Kalian tau ngga, kalo penyusunan RUU ini telah melalui proses yang panjang lho. Coba disimak thread Yomin ini ya\n\n#KumhamPasti\n#OmnibusLawTaatProsedural\n#Kumham22\nTampilkan utas ini', 1, 1),
+(1346, 'Bareskrim Polri menahan 9 orang tersangka kasus dugaan ujaran kebencian bernuansa SARA dan penghasutan yang menyulut aksi anarkis pada demo penolakan RUU Cipta Kerja, tanggal 8 Oktober lalu. \n\n#CNNIDNewsHour\nhttp://cnnindonesia.com/tv', 1, 1),
+(1347, 'SALAH KETIK FRASA PADA RUU CIPTA KERJA/OMNIBUS LAW?\n\nOleh: Chandra Purna Irawan,S.H.,M.H. (Ketua Eksekutif Nasional BHP KSHUMI & Sekjen LBH PELITA UMAT)\n  #AyoTerapkanIslamKaffah ', 0, 0),
+(1348, 'Membalas \n@Anya_____2Ada yang punya link RUU OB CIPTA KERJA?', 0, 0),
+(1349, 'Bank Dunia mendukung langkah pemerintah dalam mempercepat pemulihan ekonomi melalui Undang-Undang Cipta Kerja. \n\n#omnibuslaw #ruuciptakerja #uuciptakerja #nasional #lampostcoBank Dunia Nilai UU Omnibus Law Bikin Indonesia Kompetitif\nOmnibus law tersebut sebagai langkah reformasi besar untuk menjadikan Indonesia lebih kompetitif dan menuju masyarakat yang sejahtera.\nlampost.co', 1, 1),
+(1350, 'Kelas online kemarin temen gue ada yang diomelin gara2 ikut demo\n\"Ngapain kamu ikut demo, mau jadi bodoh? Hotman paris aja setuju dengan RUUCiptakerja. Kamu yg ga tau apa2 demo demo\"\n\nUpsiiii wkwkTweet Kutipan\nCh chotimah\n@Ch_Chotlmah\n · 16 Okt\nBantahan dan klarifikasi Hotman Paris terhadap plintiran kadrun terkait video dia yg lama, video yg tdk terkait dgn UU cipta kerja.\n\nBantu sebarkan teman2, kemarin pak Hotman sdh bantu kita bgmn baiknya omnibus law skrng kita bantu dia.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja\nTampilkan utas ini', 0, 1),
+(1351, 'Hai #SobatBUMN \nTahukah kalian bahwa RUU Cipta Kerja disusun dengan latar belakang untuk memangkas korupsi khususnya pada birokrasi perijinan usaha?', 1, 1),
+(1352, 'does anyone has ateez inspirational quotes, i need them right now\n#ATEEZ\n @ATEEZofficial', 0, 0),
+(1353, 'elu bg \n@Dzawinur\n ?Tweet Kutipan\nV̷̧̋̍͝arreal\n@blasphemers_\n · 16 Okt\nme: trying to sleep\n\nmy brain at 3 am:', 1, 0),
+(1354, 'Apakah pemerintah tidak berfikiran mengenai gelombang demo yg terus bertambah setiap harinya untuk menolak RUU CIPTA KERJA ini berdampak pada peningkatan angka penularan COVID-19? Tinggal batalkan kemudian terbitkan PERPPU. Huhu stay safe untuk kalian yg hari ini turun LAGI.', 0, 0),
+(1355, 'RUU Cipta Kerja merupakan revolusi mental dalam bentuk produk hukum.RUU Cipta Kerja Bantu Masyarakat Mencari Pekerjaan\nPemerintah mengatakan hadirnya RUU Cipta Kerja yang telah disahkan menjadi Undang-Undang membantu masyarakat mencari pekerjaan.\ncorrecto.id', 1, 1),
+(1356, '#SahabatMido, sekarang lagi rame nih ya bahas Penyusunan RUU Cipta Kerja. Kalian tau ngga, kalo penyusunan RUU ini telah melalui proses yang panjang lho. Coba disimak thread Mido ini ya\n\n#KumhamPasti\n#OmnibusLawTaatProsedural\n#Kumham22 ', 1, 1),
+(1357, 'ikan hiumakan tomat \nrasanya seperti anda menjadi iron man\n\n#ruuciptakerja', 0, 1),
+(1358, 'Selama ini belum pernah ada jaminan terhadap tenaga kerja yang mengalami PHK. Namun pemerintah kini memastikan jaminan itu ada dan dituangkan dalam RUU Cipta Kerja yang sudah disahkan. \n\nBagus lah.Sejak Indonesia Merdeka Baru Kali Ini Buruh \'Digaji\' Saat PHK\nSelama ini belum pernah ada jaminan terhadap tenaga kerja yang mengalami Pemutusan Hubungan Kerja (PHK).\ncnbcindonesia.com', 1, 1),
+(1359, 'Dua sisi paslon 1 isterinya ngikut ngesahin RUU Cipta kerja paslon 2 keluarga pembabat hutan hiyaaaaaa', 0, 0),
+(1360, 'Jangan sampai terhasut kembali\n\n#RUUCiptaKerja', 1, 0),
+(1361, 'Tidak ada perubahan sistem upah dan tidak ada hak cuti yang dihilangkan\n\n#RUUCiptaKerja', 1, 1),
+(1362, '7. Pada 27 Januari 2020, Menteri \n@PerekonomianRI\n menyampaikan draft RUU Cipta Lapangan Kerja dan naskah akademik yang menyertainya kepada presiden \n@jokowi\n melalui surat nomor: PH.2.1-15/M.EKO/01/2020', 1, 1),
+(1363, '#SahabatPengayomansekarang lagi rame nih ya bahas Penyusunan RUU Cipta Kerja. Kalian tau ngga, kalo penyusunan RUU ini telah melalui proses yang panjang lho. Coba disimak thread Yomin ini ya\n\n#KumhamPasti\n#OmnibusLawTaatProsedural\n#Kumham22', 1, 1),
+(1364, '#Repost \n@atr_bpn\n#SobATRBPN, kemudahan pengurusan lahan akan dibenahi melalui RUU Cipta Kerja, guna meningkatkan iklim investasi yang kemudian akan menciptakan lapangan kerja.\n.\n#UntukEkonomiIndonesia\n#IndonesiaMaju\n#RUUCiptaKerja', 1, 1),
+(1365, 'Judicial Review oleh Mahkamah Konstitusi\nUpaya hukum yang bisa dilakukan oleh buruh mapun pihak yang merasa dirugikan dengan terbitnya RUU Cipta Kerja ini bisa dilakukan dengan mekanisme uji materi ke Mahkamah Konstitusi.', 1, 0),
+(1366, 'Dan pemerinah sudah jelas menyatakan RUU Cipta Kerja ini bisa mendatangkan investor dan lapangan kerja baru, untuk itu meminta Presiden mengeluarkan Perppu adalah hal yang paling irasional.', 0, 1),
+(1367, 'Itu artinya pembentukan Perppu merupakan jalan yang irasional, mengingat RUU Cipta Kerja ini merupakan inisiatif dari pemerintah sendiri, akan sangat mengeherankan jika pemerintah mengeluarkan Perppu untuk undang-undang atas inisiatifnya sendiri.', 0, 1),
+(1368, 'untuk itu perlu adanya penyederhadaan perizinan, sehingga proses perizinan tersebut tidak memakan waktu yang lama dan birokrasi pun bisa dipangkas, maka jalan yang dipakai adalah dengan menciptakan harmonisasi hukum, maka terciptalah RUU Cipta Kerja ini.', 1, 1),
+(1369, 'RUU CIpta Kerja merupakan aturan yang dinilai kurang memadai untuk mengakomodir beberapa permasalah seperti ketenagakerjaan ataupun masalah lingkungan dan perizinan. Tetapi rasionalkah Presiden mengeluarkan Perppu tersebut?', 0, 1),
+(1370, 'Unjuk rasa tersebut tidak hanya dilakukan oleh para buruh saja, tetapi dari berbagai kalangan, baik itu mahasiswa maupun para pelajar. Unjuk rasa tersebut tidak lain untuk menuntut keadilan dan hak-hak buruh yang dinilai telah dirampas oleh RUU Cipta Kerja tersebut.', 0, 0),
+(1371, 'Gelombang penolakan RUU Cipta Kerja masih terus terjadi di beberapa daerah di Indonesia, bahkan demo tersebut berujung rusuh yang ditandai dengan perusakan fasilitas umum dan juga aksi vandalisme.', 0, 1),
+(1372, 'Atas disahkannya RUU Cipta Kerja atau Omnibus Law menjadi Undang-undang, gejolak di masyarakat masih panas. Apalagi di kalangan buruh dan mahasiswa yang belum bisa menerima pengesahan UU Cipta Kerja atau Omnibus Law tersebut.', 0, 0),
+(1373, 'Reposted from \n@kementerian\n.atrbpn #Repost \n@perekonomianri\n with \n@make_repost\n・・・\n#Grafikonomi \n\nProsedur Program Legislasi Nasional (Prolegnas) dan pembahasan RUU Cipta Kerja di DPR RI telah ditaati oleh DPR RI, DPD RI, dan Pemerintah. \n\n#OmnibusLawTaatProsedur\n#CiptaKerja', 1, 1),
+(1374, 'ISEAS Commentary by Syafiq Hasyim - President Jokowi’s unpopular job creation law creates a new rift with Indonesia’s leading Islamic groups.\n\n#Indonesia #OmnibusLaw #RUUCiptaKerja #JokowiIndonesian Muslim Groups Oppose Omnibus Law - ISEAS-Yusof Ishak Institute\nPresident Jokowi’s unpopular job creation law creates a new rift with Indonesia’s leading Islamic groups. Activists take part in a protest in Surabaya\niseas.edu.sg', 0, 1),
+(1375, 'Membalas \n@hnurwahid\n dan \n@FPKSDPRRIApa PKS mengedukasi RUU Cipta Kerja secara jujur dan sesuai dengan isi sesungguhnya tanpa di edit? 7Kalau tudak jujur maka dari mulai anda sampai ulama yang meatasnamakan ulama akan durhaka', 1, 0),
+(1376, 'Sosialisasi RUU Cipta Kerja, Mudah Izin Usaha, Kemnaker Dorong Generasi Muda Jadi Pelaku UMKM https://pedoman.co/news/sosialisasi-ruu-cipta-kerja-mudah-izin-usaha-kemnaker-dorong-generasi-muda-jadi-pelaku-umkm/… lewat \n@pedoman_id\n@fadjroeL\n @JubirPresidenRI\n @Jokowinomics_id\n @KemnakerRI\n @PerekonomianRI\n @KemenBUMN\n @budimandjatmiko\n @idafauziyah√ Sosialisasi RUU Cipta Kerja, Mudah Izin Usaha, Kemnaker Dorong Generasi Muda Jadi Pelaku UMKM\nPEDOMAN.co - Kementerian Ketenagakerjaan (Kemnaker) mendorong masyarakat khususnya kalangan generasi muda untuk menjadi wirausaha di sektor Usaha Mikro Kecil da\npedoman.co', 1, 1),
+(1377, '8 Ribu Personel Gabungan Akan Kawal Demo Tolak RUU Cipta Kerja http://dlvr.it/RjjCyJ', 1, 0),
+(1378, 'Membalas \n@trve_cvlt999Termasuk perancangan dan isi draft dari RUU cipta kerja', 1, 0),
+(1379, 'Membalas \n@ZAEffendyOmnibus Law RUU Cipta Kerja, Draft Omnibus Law Cipta Kerja telah diserahkan oleh pemerintah kepada DPR RI, Pemerintah meyakini RUU tsb dapat memperkuat perekonomian Indonesia.', 1, 1),
+(1380, '\"Dengan RUU Cipta Kerja kita harapkan adanya perubahan struktur ekonomi untuk mendorong pertumbuhan ekonomi dan perluasan kesempatan kerja,\" #RakyatButuhUUCiptaKerja', 1, 1),
+(1381, 'Tidak ada PHK yang dilakukan secara semena-mena dan jaminan sosial pun tidak dihilangkan\n\n#RUUCiptaKerja', 1, 1),
+(1382, 'RUU Cipta Kerja untuk mempercepat perekonomian di Indonesia.\n\nAtasi Pandemi\n#RakyatButuhUUCiptaKerjaTweet Kutipan\nBHINNEKATUNGGALIKA\n@tjhinfar21\n · 16 Okt\nCIKAL BAKAL LAHIRNYA UU CIPTA KERJA\n\n1.Berawal dari pidato Presiden @jokowi sehari setelah pelantikan\nAda 5 poin yg menjadi fokus utama beliau.\nDalam pidatonya beliau berulang kali menyampaikan dgn keras dan tegas\n\nHAJAR..!!! KEJAR..!!! \nAtasi Pandemi\n#RakyatButuhUUCiptaKerja\nTampilkan utas ini', 1, 1),
+(1383, 'Pihak yang selama ini menolak RUU Cipta Kerja nantinya akan menjadi public enemy. Pasalnya, ada jutaan masyarakat yang membutuhkan pekerjaan akibat terdampak Covid-19 ini.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1384, 'Prabowo mengaku sejak awal telah menginstruksikan Fraksi Gerindra di Dewan Perwakilan Rakyat untuk meneliti RUU Cipta Kerja tiap klaster hingga pasalnya.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 0),
+(1385, 'Alhamdulillah, ketika pandemi melanda, kinerja buruk beberapa tahun lalu itu dibayar tuntas dengan percepatan pembahasan RUU Cipta Kerja Omnibus Law.\n\nBenar-benar di atas normal deh. Rajin betul kerjanya. Salut, Pak… Salut.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1386, 'Naskah RUU Cipta Kerja Disampaikan ke Presiden https://pedoman.co/news/naskah-ruu-cipta-kerja-disampaikan-ke-presiden/… lewat \n@pedoman_id\n#RakyatButuhUUCiptaKerja√ Naskah RUU Cipta Kerja Disampaikan ke Presiden\nPEDOMAN.co - Naskah Rancangan Undang-undang tentang Cipta Kerja (RUU Cipta Kerja) yang telah disetujui oleh Dewan Perwakilan Rakyat Republik Indonesia (DPR RI)\npedoman.co', 1, 1),
+(1387, 'UMR tetap ada dan pesangon pun tetap wajib dibayarkan\n\n#RUUCiptaKerja', 1, 1),
+(1388, 'Dengan aturan RUU cipta kerja baru bisa membuat mafia dan birokrat korup untuk mengatur perekonomian indonesia\n#RakyatButuhUUCiptaKerjaSambut Baik Omnibus Law UU Cipta Kerja, Prof. Romli: Akhirnya Pemerintah Berani Memutus Rantai...\nPUBLIKSATU – Berbeda dengan mayoritas publik dan aktivis di negeri ini, pakar hukum tata negara, Profesor Romli Atmasasita justru menyambut baik lahirnya Omnibus Law UU Cipta Kerja. Menurutnya,...\npubliksatu.co', 1, 1),
+(1389, 'Tidak ada PHK secara sepihak dan jaminan sosial tetap ada bahkan \"bertambah\"\n\n#RUUCiptaKerja', 1, 1),
+(1390, 'Banyak manfaat dari RUU cipta kerja salah satunya dengan menyelamatkan Indonesia dari resesi ekonomi dan pengangguran besar-besaran  #RakyatButuhUUCiptaKerjaSri Mulyani Sebut Tujuan Omnibus Law untuk Keluarkan Indonesia dari Middle Income Trap Halaman all...\nMenkeu Sri Muyani meyakini Indonesia bisa menjadi negara yang efisien setelah Omnibus Law UU Cipta Kerja berlaku. Halaman all\nmoney.kompas.com', 1, 1),
+(1391, 'Bersama-sama kita rangkul masyarakat Indonesia menjadi lebih maju dengan RUU cipta kerja banyak pihak asing dan pengkhianat yang ingin menghancurkan negara kita  #RakyatButuhUUCiptaKerjaSatgas Omnibus Law: UU Cipta Kerja adalah Obat bagi Obesitas Regulasi\nUU Cipta Kerja dinilai juga solusi untuk mengurangi pengangguran.\nviva.co.id', 1, 1),
+(1392, 'Upah tetap dihitung berdasarkan waktu/hasil serta hak cuti yang tidak dihilangkan sama sekali\n\n#RUUCiptaKerja', 1, 1),
+(1393, 'Pahami substansinya biar tidak terprovokasi\n\n#RUUCiptaKerja', 1, 1),
+(1394, 'kalangan pengusaha justru mendukung disahkannya UU Cipta Kerja.  Hal tersebut karena pengesahan RUU Cipta Kerja menjadi Undang-Undang dapat mengeliminasi sejumlah permasalahan dan hambatan industri', 1, 0),
+(1395, 'Membalas \n@LILApama2011Biar jelas para pengusaha mau bikin lapangan kerja baru ya semoga RUU Cipta Kerja cepet beres lah, jadi jelas aturannya gimana. Biar orang2 jadi bisa gerak cepet.', 1, 1),
+(1396, 'Teman-teman Muhammadiyah jelas mendukung kebijakan RUU cipta kerja itu bisa memutus rantai ada gosip bahwa ormas Islam menolak\n#RakyatButuhUUCiptaKerjaPemuda Muhammadiyah Dukung Judicial Review Omnibus Law\nKetua Umum PP Pemuda Muhammadiyah, Sunanto mengatakan, pemerintah dan DPR harus mencermati dan memperhatikan serta mencatat setiap tuntutan untuk disikapi dalam bentuk keputusan politik yang mengun...\nmerdeka.com', 1, 1),
+(1397, 'Di pemerintahan dan perusahaan di Indonesia terkenal dengan regulasi nya yang suit, tapi berkat RUU Cipta Kerja regulasi perizinan Indonesia bisa menjadi lebih muda\n#RakyatButuhUUCiptaKerjaOmnibus Law Jadi Puncak Perbaikan Regulasi Perizinan di Indonesia\nSejak 2017, Pemerintah sudah melakukan serangkaian perbaikan regulasi perizinan.\nliputan6.com', 1, 1),
+(1398, 'Seharus RUU Ciptakerja yg dihentikan agar rakyat ngak turun demo.\n\nDemi Kemanusiaan, Kirana Minta Pilkada Serentak Berhenti Sampai Kondisi Aman dari Corona .\n\nDemi Kemanusiaan, Luhut Minta Demo Berhenti Sampai Kondisi Aman dari CoronaDemi Kemanusiaan, Luhut Minta Demo Berhenti Sampai Kondisi Aman dari Corona\nBaca Artikel Demi Kemanusiaan, Luhut Minta Demo Berhenti Sampai Kondisi Aman dari Corona Selengkapnya di Gelora News\ngelora.co', 0, 0),
+(1399, 'Rata-rata semua pihak mendukung RUU cipta kerja masih bingung sama yang menolak, apa yang menolak itu termasuk agen asing yang ingin mengacaukan negara ini  #RakyatButuhUUCiptaKerjaGerindra Dukung Omnibus Law, Prabowo Yakin Jokowi Pikirkan Rakyat\nTerkini.id, Jakarta - Menteri Pertahanan yang juga Ketua Umum Partai Gerindra, Prabowo Subianto meyakini Presiden Joko Widodo memikirkan rakyat dan bangsa di balik keputusannya ihwal Undang-undang...\nterkini.id', 1, 1),
+(1400, 'Banyak orang yang belum memahami isi draf dari RUU cipta kerja dengan asal saja mengatakan isi nya tidak memihak rakyat, lebih baik saat ini fokus Atasi Pandemi\n#RakyatButuhUUCiptaKerjaRakyat Butuh Lapangan Kerja, RUU Ciptaker Dibutuhkan Pasca Covid-19 - RMOLSUMSEL\nPemerintah dan DPR RI diminta untuk segera merampungkan pembahasan Omnibus Law Rancangan Undang-Undang (RUU) Cipta Kerja agar dapat disahkan. Undang-undang tersebut akan sangat dibutuhkan untuk...\nrmolsumsel.id', 1, 1),
+(1401, 'Omnibus Law RUU Cipta Kerja bisa jadi solusi di masa-masa setelah krisis kesehatan dan pandemi yang terjadi saat ini.\n\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1402, 'Dalam prosesnya, RUU Cipta Kerja didukung oleh seluruh partai pendukung koalisi pemerintah. Sedangkan, dua fraksi menyatakan menolak RUU menjadi UU Cipta Kerja ini yaitu  PKS  dan Partai Demokrat.\n\nAtasi Pandemi\n#RakyatButuhUUCiptaKerjaEkonom Kritik Jokowi: Penyakit Utama Korupsi, Obatnya UU Cipta Kerja Halaman all - Kompas.com\nINDEF mengkritik kebijakan Presiden Jokowi yang tidak menaruh perhatian serius pada penguatan penegakan hukum korupsi. Halaman all\nmoney.kompas.com', 0, 1),
+(1403, 'Membalas \n@LILApama2011Sebenarnya justru BANYAK BANGET KEUNTUNGAN dari RUU Cipta Kerja yang justru memihak rakyat kecil.', 1, 0),
+(1404, 'Menaker Ida: RUU Cipta Kerja Tidak Ompong, Ketentuan Sanksi Diadopsi dari UU Lama\nhttps://kemnaker.go.id/news/detail/menaker-ida-ruu-cipta-kerja-tidak-ompong-ketentuan-sanksi-diadopsi-dari-uu-lama…\n#MenakerIdaFauziyah\n#RTriwibowo\n#ManfaatUUciptakerja\n#Kemnaker\n@jokowi\n \n@idafauziyah\n \n@Quote_Bees\n \n@KemnakerRI', 1, 1),
+(1405, 'kalangan pengusaha justru mendukung disahkannya UU Cipta Kerja.  Hal tersebut karena pengesahan RUU Cipta Kerja menjadi Undang-Undang dapat mengeliminasi sejumlah permasalahan dan hambatan industri, sehingga UU Cipta Kerja diyakini akan menjadi salah satu daya tarik investasi.', 1, 1),
+(1406, 'RUU Cipta Kerja yang dikirimkan ke presiden berjumlah 812 halaman. ’’Sama seperti yang disampaikan pimpinan DPR, 812 halaman, tidak ada yang berubah.\n\nAtasi Pandemi\n#RakyatButuhUUCiptaKerjaDPR Jamin Tidak Ada Pasal-Pasal Selundupan di UU Cipta Kerja\nDPR akhirnya menyerahkan Rancangan Undang-Undang (RUU) Cipta Kerja (Ciptaker) ke Presiden Joko Widodo kemarin (14/10). Dewan memastikan tidak ada perubahan.\njawapos.com', 1, 1),
+(1407, 'Unjuk rasa terhadap Rancangan Undang-Undang (RUU) Cipta Kerja oleh sejumlah pihak banyak didasari atas hoaks atau disinformasi. Menkominfo menghimbau agar masyarakat tidak mudah terpicu informasi yang tidak benar.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerjaMenkominfo: Masyarakat Jangan Terpicu Hoaks UU Cipta Kerja\nJakarta, Ditjen Aptika - Unjuk rasa terhadap Rancangan Undang-Undang (RUU) Cipta Kerja oleh sejumlah pihak banyak didasari atas hoaks atau disinformasi. Menkominfo menghimbau agar masyarakat tidak...\naptika.kominfo.go.id', 1, 1),
+(1408, 'Ya elah giliran pembahasan yg gampang2 ini menteri pd turun semua.. sepelik ruu cipta kerja pd berlindung dibalik istana.. cemen nih kabinetTweet Kutipan\nKresna Astraatmadja\n@KresnaAstra\n · 15 Okt\nUntuk masalah2 pelik, biarlah cewe2 aja yg bahas. Kami cowo2 mah gak kuat, mau nyabun aja sambil cuci tangan...', 0, 1),
+(1409, 'Membalas \n@rmol_id...lanjutnya, proses pembahasan RUU Cipta Kerja pun malahan seperti siluman. Dalam arti tidak transparan dan tidak jelas.', 0, 1),
+(1410, 'Membalas \n@RamliRizalApalagi, lanjutnya, proses pembahasan RUU Cipta Kerja pun malahan seperti siluman. Dalam arti tidak transparan dan tidak jelas.\n\n\"Undang-undang ini untuk meningkatkan investasi harus ada. Tetapi, di dalam ini  undang-undang yang ada ini mengakomodasi semuanya berjalan seimbang.', 0, 1),
+(1411, 'Kisah Tertinggalnya Pasal 65 di RUU Cipta Kerja https://kompas.id/baca/polhuk/2020/10/16/satu-pasal-yang-membuka-kotak-pandora/?utm_source=bebasakses_kompasid&utm_medium=twitter_shared&utm_content=sosmed&utm_campaign=sharinglink… via \n@hariankompasKisah Tertinggalnya Pasal 65 di RUU Cipta Kerja\nSatu pasal ”ditinggalkan” saat pemerintah dan DPR sepakat mengeluarkan kluster pendidikan dari RUU Cipta Kerja. Mengundang pertanyaan banyak pihak, terutama karena berpotensi melapangkan liberalisasi...\nkompas.id', 0, 0),
+(1412, 'Rancangan Undang-Undang (RUU) Cipta Kerja agar dapat disahkan. Undang-undang tersebut akan sangat dibutuhkan untuk pemulihan ekonomi pasca pandemi Covid-19. #RakyatButuhUUCiptaKerja', 1, 1),
+(1413, 'Prabowo mengaku sejak awal telah menginstruksikan Fraksi Gerindra di Dewan Perwakilan Rakyat untuk meneliti RUU Cipta Kerja tiap klaster hingga pasalnya. #RakyatButuhUUCiptaKerja', 1, 0),
+(1414, 'Ada hal-hal yg harus diluruskan atas sebaran hoax mengenai omnibus law cipta kerja.\nJadi baca deh draft RUU nya, biar gak asal menghujat aja\n#RakyatButuhUUCiptaKerjaIni 7 Hoax dan Fakta UU Cipta Kerja\nSejumlah hoax tentang isi UU Cipta Kerja beredar di masyarakat.\nberitasatu.com', 1, 1),
+(1415, 'Pemerintah dan DPR RI diminta untuk segera merampungkan pembahasan Omnibus Law Rancangan Undang-Undang (RUU) Cipta Kerja agar dapat disahkan. \nhttp://rmolsumsel.id/2020/05/07/rakyat-butuh-lapangan-kerja-ruu-ciptaker-dibutuhkan-pasca-covid-19/…\nAtasi Pandemi\n#RakyatButuhUUCiptaKerjaRakyat Butuh Lapangan Kerja, RUU Ciptaker Dibutuhkan Pasca Covid-19 - RMOLSUMSEL\nPemerintah dan DPR RI diminta untuk segera merampungkan pembahasan Omnibus Law Rancangan Undang-Undang (RUU) Cipta Kerja agar dapat disahkan. Undang-undang tersebut akan sangat dibutuhkan untuk...\nrmolsumsel.id', 1, 1),
+(1416, 'Kemnaker  optimistis, dengan disahkannya RUU Cipta Kerja, maka pengangguran dan kemiskinan cepat teratasi. Kita terus dorong masyarakat menjadi wirausaha di sektor UMKM.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1417, 'Hoax dan Isu Sesat Seputar RUU Cipta Kerja – Omnibus Law. Faktanya tidak begitu. Kita hanya harus Fokus Atasi Pandemi demi pengurangan klaster covid #RakyatButuhUUCiptaKerja', 1, 1),
+(1418, 'UU CIPTA KERJA BANTU MASYARAKAT MENCARI PEKERJAAN\n\nPemerintah mengatakan hadirnya RUU Cipta Kerja yang telah disahkan menjadi Undang-Undang membantu masyarakat mencari pekerjaan.\n\nAtasi Pandemi #RakyatButuhUUCiptaKerja', 1, 1),
+(1419, 'Hai SohIB! Seperti apa sih perjalanan RUU #OmnibusLaw Cipta Kerja sebelum disahkan menjadi UU tanggal 5 Oktober 2020 lalu?\n\n#IndonesiaBaik #YangMudaSukaData #Infografis #ProgramPemerintah #UUCiptaKerja \n@PerekonomianRI\n @setkabgoid', 1, 0),
+(1420, 'RUU Cipta Kerja agar dapat disahkan. Undang-undang tersebut akan sangat dibutuhkan untuk pemulihan ekonomi pasca pandemi. Atasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1421, 'Pemerintah dan DPR RI harus mempercepat pengesahan RUU Cipta Kerja.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1422, 'Sementara pemerintah, mengklaim bahwa RUU Law Cipta Kerja memberikan manfaat bagi masyarakat. Atasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1423, 'RUU Cipta Kerja Dinilai akan Membuat Pengangguran dan Kemiskinan Teratasi. Atasi Pandemi\n#RakyatButuhUUCiptaKerja', 1, 1),
+(1424, 'Pemerintah Klaim Ada 9 Keuntungan RUU Omnibus Law Cipta Kerja bagi Masyarakat. Atasi Pandemi\n#RakyatButuhUUCiptaKerjaDitolak Buruh, Pemerintah Klaim Ada 9 Keuntungan RUU Omnibus Law Cipta Kerja bagi Masyarakat »...\nJAKARTA, JOGLOSEMARNEWS.COM – Pemerintah bersama dengan Dewan Perwakilan Rakyat (DPR) telah menyepakati Rancanan Undang-Undang (RUU) Ominbus Law Cipta Kerja. Selanjutnya, RUU tersebut bakal dibawa ke...\njoglosemarnews.com', 1, 1),
+(1425, 'Lebih jauh ia mengatakan, pihak yang selama ini menolak RUU Cipta Kerja nantinya akan menjadi public enemy. Atasi Pandemi\n#RakyatButuhUUCiptaKerja', 0, 1),
+(1426, 'Selain Demokrat akan menunggangi pendemo sebagai sikap yang sejalan, menolak RUU Cipta Kerja yang kemungkinan telah mendalangi aksi tersebut juga tercium bau busuk', 0, 0),
+(1427, 'Menaker Ida: RUU Cipta Kerja Tidak Ompong, Ketentuan Sanksi Diadopsi dari UU LamaMenaker Ida: RUU Cipta Kerja Tidak Ompong, Ketentuan Sanksi Diadopsi dari UU Lama\nPekerja ter-PHK berhak atas pelatihan dan sertifikasi gratis, sambil menunggu mendapat pekerjaan baru\nmbsnews.id', 1, 1),
+(1428, 'Membalas \n@KompasTVNah ini kesalahan fatal mu Zis... harusnya orang pertama yg hatam RUU cipta kerja ya kamu.', 0, 0),
+(1429, 'Rapat yang digelar tertutup dan super cepat itu, biasanya datang dari niat yang buruk.\n\nRapat-Rapat Penentu RUU Cipta Kerja https://tirto.id/f5VY?utm_source=Twitter&utm_medium=Share… \n\n*UU Cilaka itu memang buruk sejak dalam perencanaan.\n\n#MosiTakPercaya', 0, 0),
+(1430, 'Membalas \n@yaelahadilHarta, tahta, RUU Cipta Kerja', 0, 0),
+(1431, 'Ketiga, berkenaan dengan hubungan ketenagakerjaan yang lebih adaptif terhadap perkembangan industri, maka pengaturannya dapat dimasukkan di dalam RUU Cipta Kerja dan terbuka terhadap masukan publik.', 1, 1),
+(1432, 'Kedua, sanksi pidana ketenagakerjaan dalam RUU Cipta Kerja dikembalikan sesuai ketentuan UU Ketenagakerjaan Nomor 13 Tahun 2003, dengan proses yang dipertimbangkan secara saksama.', 1, 1),
+(1433, 'Pertama, berkenaan dengan materi muatan klaster ketenagakerjaan RUU Cipta Kerja yang sudah terdapat putusan Mahkamah Konstitusi, tentang PKWT, upah, pesangon, hubungan kerja, PHK,', 1, 1),
+(1434, 'DPR sebenarnya telah memfasilitasi pembentukan tim perumus yang berisi perwakilan serikat pekerja dan Panja RUU Cipta Kerja DPR RI. Tim perumus ini kemudian menghasilkan empat kesepahaman.', 1, 1),
+(1435, 'menurut gua RUU cipta kerja dibuat supaya investor asing masuk, sesuai visi jokowi dari awal kampanye. kita harus nya udah sadar dari awal langkah kebijakan nya mau kemana.', 1, 1),
+(1436, 'Ayo coba menerka nerka,\nRUU KPK di sahkan itu apakah ada hubungannya dengan RUU cipta kerja?\n\nBuruh di untungkan ini fakta bukan isu, di balik itu semua katanya intinya untuk memangkas birokrat agar memper “MUDAH” pelaku usaha\n\n#GagalTotalTunggangiHoaxOBL', 0, 1),
+(1437, 'Semoga kita dijaga kesehatan di masa pandemi Covid19, jangan terprovokasi denga isu-isu yang dapat memecahkan belah bangsa.\n\n#OmnibusLawBermanfaat #OmnibusLawHalal #ruuciptakerja #stophoaxuuciptaker1:48\n36 tayangan', 1, 1),
+(1438, 'Omnibus Law berantas Mafia birokrasi\n\n#ruuciptakerja #ruuciptakerjatingkatkaninvestasi #dukungomnibuslaw#omnibuslawpropekerja #omnibuslawuntungkanburuh', 1, 1),
+(1439, 'Omnibus Law memutus rantai mafia demokrasi\n\n#covid19sembuh #ruuciptakerja #ruuciptakerjatingkatkaninvestasi #dukungomnibuslaw#omnibuslawpropekerja #omnibuslawuntungkanburuhDari \nNira\nTweet Kutipan\nNira\n@Nira03036345\n · 16 Okt\n0:44\nOmnibus Law mempercepat pertumbuhan ekonomi pasca pandemi Covid-19\n\n#bersatulawancovid19 #kawalcovid19#indonesia\n#ruuciptakerja\n#omnibuslawuntungkanburuh', 1, 1),
+(1440, 'Nelayan juga akan semakin sejahtera\n\n#RUUCiptaKerja', 1, 1),
+(1441, 'Mensejahterakan UMKM yang menjadi roda penggerak ekonomi bangsa\n\n#RUUCiptaKerja', 1, 1),
+(1442, 'Manfaat yang didapatkan para pekerja\n\n#RUUCiptaKerja', 1, 1),
+(1443, 'Demi mempercepat transformasi ekonomi\n\n#RUUCiptaKerja', 1, 1),
+(1444, 'Apa aja sih manfaatnya? Banyak kok\n\n#RUUCiptaKerja', 1, 1),
+(1445, 'Berikut laporan dari Koresponden Mahardhika Utama terkait rekayasa lalu lintas jelang demo RUU Cipta Kerja.\n\n#CNNIDAfter10\nhttp://cnnindonesia.com/tv', 1, 1),
+(1446, 'Membalas \n@Bengkeltanah2Ga ada ini pun, pemakai ubas matanya sll berair. Pr tsk itu ltr belakangnya aktivis apa?\nOrang\"pd berargumen atas pernyataan sdh bc RUU Cipta Kerja ? Yg demonstrasi apa sdh tahu apa yg diprotes,kmn hrs protes dan bgm protesnya ditanggapi ?Titip pertanyaan Pak/Bu \n@pidum_bareskrim', 0, 0),
+(1447, 'Tolak RUU Pengesahan RUU Cipta Kerja, BEM SI Kembali Demo Hari Ini https://bit.ly/3nVwJ9X\n\nCari berita lain? Klik di sini http://bit.ly/2MXCxRZ', 1, 0),
+(1448, 'RUU Cipta Kerja Putus Rantai Mafia Birokrasi \n\n#Ciptaker\n#Mafia\n#OmnibusLawUntungkanBuruh', 1, 1),
+(1449, 'Ketua Desk Politik Wahana Lingkungan Hidup Indonesia ( Walhi) Khalisa Khalid mengatakan, pihaknya menyesalkan sikap DPR dan pemerintah yang mengesahkan Omnibus Law RUU Cipta Kerja menjadi undang-undang (UU).', 0, 1),
+(1450, 'Membalas \n@mulatt3\n @tandanVradio\n  dan 6 lainnyaBetul, pemerintah hadir dlm pembahasan RUU cipta kerja jadi tau betul kalau kutipan kutipan yg beredar di medsos itu ada yang hoax, itu kata pak menteri di video lengkapnya', 1, 1),
+(1451, 'Banyak yg ketakutan dan ditakutin kena PHK kalo RUU cipta kerja ini berlaku. \n\nHeyy, kalo kerja kita bener, disiplin, produktif, ga melanggar aturan perusahaan, mana mungkin dipecat. UU Cipta Kerja Bikin Pekerja Produktif, Bukan Rentan Kena PHK\nUU Cipta Kerja diharapkan membuat pertumbuhan ekonomi Indonesia ke depan terus membaik.\nm.liputan6.com', 1, 1),
+(1452, 'Mbaknya harus tau postingan2 kerja di Luar Negeri itu akibat dari merebaknya isu RUU Cipta Kerja. Fyiuuh ~', 1, 1),
+(1453, 'Membalas \n@k1k1taufik\n dan \n@MataNajwaMenyalahkan masyarakat +62 terkena HOAX, padahal pemerintahnya sendiri yg tertutup dan tidak terbuka soal Draft RUU Cipta Kerja. Kenapa Kemenkominfo membiarkan 12 draft palsu yg disebar katanya HOAX beredar dimedsos? Giliran sudah rusuh, baru bilang itu HOAX.', 0, 1),
+(1454, 'Pembentukan Panitia Penyusunan RUU pun ditaati, yang tertuang dalam Keputusan Menteri Koordinator Bidang Perekonomian Nomor 318 Tahun 2019. \n\nSelain itu, Pengharmonisasian RUU oleh Kementerian Hukum dan HAM pun telah dilakukan.\n\n#OmnibusLawTaatProsedur\n#CiptaKerja', 1, 1),
+(1455, '#Repost \n@perekonomianri\n・・・\n#Grafikonomi \n\nProsedur Program Legislasi Nasional (Prolegnas) dan pembahasan RUU Cipta Kerja di DPR RI telah ditaati oleh DPR RI, DPD RI, dan Pemerintah.', 1, 1),
+(1456, '#SahabatPengayoman, sekarang lagi rame nih ya bahas Penyusunan RUU Cipta Kerja. Kalian tau ngga, kalo penyusunan RUU ini telah melalui proses yang panjang lho.\n#KumhamPasti\n#OmnibusLawTaatProsedural\n#Kumham22', 1, 1),
+(1457, 'Memasukkan klausul perizinan sektor pendidikan dalam RUU Cipta Kerja dinilai membuka peluang komersialisasi pendidikan. Apalagi RUU ini dimaksudkan untuk memberi kemudahan berusaha bagi pemilik modal. \n\n#Humaniora #adadikompasPendidikan Bukan Komoditas\nMemasukkan klausul perizinan sektor pendidikan dalam RUU Cipta Kerja dinilai membuka peluang komersialisasi pendidikan. Apalagi RUU ini dimaksudkan untuk memberi kemudahan berusaha bagi pemilik modal.\nkompas.id', 1, 1),
+(1458, 'MOSI TIDAK PERCAYA: CABUT RUU CIPTA KERJA, BUBARKAN DPR, DAN BANGUN DEWAN RAKYAT! \n\nsalam kobaran api perjuangan!Tweet Kutipan\nCNN Indonesia\n@CNNIndonesia\n · 16 Okt\nDemo Mahasiswa di Istana, 8.000 Aparat TNI-Polri Dikerahkan https://cnnindonesia.com/nasional/20201016083814-20-559060/demo-mahasiswa-di-istana-8000-aparat-tni-polri-dikerahkan?utm_source=twitter&utm_medium=oa&utm_content=cnnindonesia&utm_campaign=cmssocmed…', 0, 0),
+(1459, 'Airlangga: RUU Cipta Kerja Justru Untungkan Buruh  http://brt.st/6t3B\nTolong yang kemarin pada demo demo unfaedah.\nYang tidak menguntungkan itu mogok kerja ikutan demo ditambah rusuh. \nMakanya jangan makan \"Hoaks\" dan minumnya es \"Provokasi\"Airlangga: RUU Cipta Kerja Justru Untungkan Buruh\nPara pimpinan serikat buruh sudah sering diajak berdiskusi. Mereka pun dilibatkan dalam pembahasan RUU Ciptaker.\ninvestor.id', 1, 1),
+(1460, 'Membalas \n@SOERYAWAD1RUU CIPTA KERJA.\nFAKTA, DITOLAK OLEH HAMPIR SELURUH PELOSOK NEGERI. TERUTAMA BURUH YG TERDAMPAK.\nTETAPI....\nTETAP DIPAKSAKAN.\n\nINI MIRIP PKI SODARA....', 0, 0),
+(1461, 'Membalas \n@TirtoIDJir tugasnya mengkaji UU cipta Kerja, level anak sekolah, kalo mahasiswa disuruh bikin RUU min 2000 lembar meuren', 0, 0),
+(1462, 'Membalas \n@detikcomAnggota DPR RI harusnya peka terhadap suara hati masyarakat.\nJika isi/materi Omnibus Law RUU Cipta Kerja dibuka ke Publik, hal ini tak akan pernah terjadi. Wahai Anggota DPR RI coba bayangkan jika buruh berada di posisi anda.\nSalam', 0, 1),
+(1463, '#SahabatPengayoman, sekarang lagi rame nih ya bahas Penyusunan RUU Cipta Kerja. Kalian tau ngga, kalo penyusunan RUU ini telah melalui proses yang panjang lho. Penyusunan awal substansi RUU ini telah dilakukan pada level kebijakan, yaitu pada sidang kabinet/rapat terbatas kabint', 1, 1),
+(1464, 'Bravo Pemerintahan Presiden Jokowi Tidak ada Celah Bagi Mafia Mafia Birokrasi melalui RUU Cipta Kerja Putus Rantai Mafia Birokrasi\n\n#Ciptaker\n#Mafia\n#OmnibusLawUntungkanBuruh', 1, 1),
+(1465, 'Pakar Hukum: Omnibus Law, RUU Cipta Kerja merupakan jalan keluar atasi persoalan ekonomi #OmnibusLawUntungkanBuruh', 1, 1),
+(1466, 'Membalas \n@Trias0405Jangan minta kejelasan dulu, ruu cipta kerja aja blm jelas kak.', 0, 0),
+(1467, 'ampuun dah gmna mo baca RUU cipta kerja yg setebal ituTweet Kutipan\nAnti_Cebong\n@Anti_Cebong07\n · 16 Okt\nMembalas @tempodotco\nNggak ada kerjaan ya bingung, baca2 komik Doraemon dan Shinchan siap itu lupa', 0, 0),
+(1468, 'Omnibus Law memutus rantai mafia demokrasi\n\n#covid19sembuh #ruuciptakerja #ruuciptakerjatingkatkaninvestasi #dukungomnibuslaw#omnibuslawpropekerja #omnibuslawuntungkanburuh', 1, 1),
+(1469, 'RUU Cipta Kerja Putus Rantai Mafia Birokrasi !\n#Ciptaker\n#MafiaRUU Cipta Kerja Putus Rantai Mafia Birokrasi ! #Ciptaker #Mafia\nyoutube.com', 1, 1),
+(1470, 'Omnibus Law mempercepat pertumbuhan ekonomi pasca pandemi Covid-19\n\n#bersatulawancovid19 #kawalcovid19#indonesia\n#ruuciptakerja\n#omnibuslawuntungkanburuh', 1, 1),
+(1471, 'rangorang di lab pada rame bahas RUU cipta kerja dan AKU CUMA BENGONG, gatau apa2', 1, 1),
+(1472, 'Jadi, naskah yg dirapihkan terkait kesalahan penulisan (typo, tanda baca dsb), ga ada perubahan sedikit pun terkait substansi yang dimuat dalam naskah RUU Cipta Kerja yang disampaikan oleh DPR RI. Tinggal tunggu paraf dari kementrian dan presiden. Naskah RUU Cipta Kerja Sedang Diparaf Dua Menteri\nIisi naskah RUU Cipta Kerja tetap sama dengan yang disepakati bersama DPR.\nrepublika.co.id', 1, 1),
+(1473, 'Satu pasal ”ditinggalkan” saat pemerintah dan DPR sepakat mengeluarkan kluster pendidikan dari RUU Cipta Kerja. Mengundang pertanyaan banyak pihak, terutama karena berpotensi melapangkan liberalisasi pendidikan. \n\n#Polhuk #adadikompasKisah Tertinggalnya Pasal 65 di RUU Cipta Kerja\nSatu pasal ”ditinggalkan” saat pemerintah dan DPR sepakat mengeluarkan kluster pendidikan dari RUU Cipta Kerja. Mengundang pertanyaan banyak pihak, terutama karena berpotensi melapangkan liberalisasi...\nkompas.id', 0, 1);
+
+--
 -- Dumping data for table `tb_dataset`
 --
 
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (17579, 1, '@RahmaFathiyyah', 'Ketua DPR: Draft RUU Cipta Kerja Hanya Dicek Acak, World Bank Justru Memujinya? | Serba-serbi MMC\n\nPengesahan UU Cipta Kerja sudah dua minggu berlalu. Sudahlah rapat larut malam saat weekend demi sahnya RUU Cilaka ini.', 'ketua dewan wakil rakyat draf rancang undang undang cipta kerja cek acak dunia bank puji serba serbi mmc kesah undang undang cipta kerja minggu rapat larut malam pekan sah rancang undang undang celaka', '0'),
 (17580, 1, '@Hendria04991579', 'Jurus kilat ala sistem kebut skripsi layaknya mahasiswa semester tua, RUU Omnibus Law ini ngebet dan ngebut digarap di Senayan.  Fixed, RUU Cipta Kerja disahkan menjadi UU Ciptaker dalam sidang paripurna yang hasilnya jauh dari kata sempurna.\n#OmnibusLawSengsarakanPerempuan', 'jurus kilat ala sistem kebut skripsi layak mahasiswa semester tua rancang undang undang omnibus law ngebet kebut garap senayan rancang undang undang cipta kerja sah undang undang cipta kerja sidang paripurna hasil sempurna', '0'),
 (17581, 1, '@anis34216465', 'Sudah jatuh tertimpa tangga. Bebas Covid-19 jauh panggang dari api, palu diketok masuk resesi, pemerintah gerak cepat kirim “kado” pengesahan RUU Cipta Kerja.\n#OmnibusLawSengsarakanPerempuan', 'jatuh timpa tangga bebas covid panggang api palu ketok masuk resesi perintah gerak cepat kirim kado kesah rancang undang undang cipta kerja', '0'),
@@ -213,7 +355,7 @@ INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `cl
 (17677, 1, '@IkaNurh50854440', 'Ketua DPR: Draft RUU Cipta Kerja Hanya Dicek Acak, World Bank Justru Memujinya? | Serba-serbi MMC\n\nPengesahan UU Cipta Kerja, oleh pimpinan DPR mengaku bahwa dia selama ini hanya mengecek secara acak draft final UU Cipta Kerja. Astaghfirullah!!Ketua DPR: Draft RUU Cipta Kerja Hanya Dicek Acak, World Bank Justru...\nPengesahan UU Cipta Kerja sudah dua minggu berlalu. Sudahlah rapat larut malam saat weekend demi sahnya RUU Cilaka ini, ternyata eh ternyata pimpinan DPR men...\nyoutube.com', 'ketua dewan wakil rakyat draf rancang undang undang cipta kerja cek acak dunia bank puji serba serbi mmc kesah undang undang cipta kerja pimpin dewan wakil rakyat aku ecek acak draf final undang undang cipta kerja astagfirullah ketua dewan wakil rakyat draf rancang undang undang cipta kerja cek acak dunia bank kesah undang undang cipta kerja minggu rapat larut malam pekan sah rancang undang undang celaka pimpin dewan wakil rakyat men', '0'),
 (17678, 1, '@nokhabibi_', 'Membalas \n@gjynmmnggllagiJurus kilat ala sistem kebut skripsi layaknya mahasiswa semester tua, RUU Omnibus Law ini ngebet dan ngebut digarap di Senayan.  Fixed, RUU Cipta Kerja disahkan menjadi UU Ciptaker dalam sidang paripurna yang hasilnya jauh dari kata sempurna.\n#OmnibusLawSengsarakanPerempuan', 'balas kilat ala sistem kebut skripsi layak mahasiswa semester tua rancang undang undang omnibus law ngebet kebut garap senayan rancang undang undang cipta kerja sah undang undang cipta kerja sidang paripurna hasil sempurna', '0'),
 (17679, 1, '@3Habsa', 'Sudahlah rapat larut malam saat weekend demi sahnya RUU Cilaka,  ternyata pimpinan DPR mengaku bahwa dia selama ini hanya mengecek secara acak draft final UU Cipta Kerja. Astaghfirullah!! Tonton fakta selengkapnya dalam video serba-serbi pagi ini di channel YouTube MMC...', 'rapat larut malam pekan sah rancang undang undang celaka pimpin dewan wakil rakyat aku ecek acak draf final undang undang cipta kerja astagfirullah tonton fakta lengkap video serba serbi pagi salur youtube mmc', '0');
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (17680, 1, '@RahmaFalya', 'Ketua DPR: Draft RUU Cipta Kerja Hanya Dicek Acak, World Bank Justru Memujinya? | Serba-serbi MMC\n\nPengesahan UU Cipta Kerja sudah dua minggu berlalu. Sudahlah rapat larut malam saat weekend demi sahnya RUU Cilaka ini, ternyata eh ternyata \nhttps://youtu.be/DZmnBOZptuA', 'ketua dewan wakil rakyat draf rancang undang undang cipta kerja cek acak dunia bank puji serba serbi mmc kesah undang undang cipta kerja minggu rapat larut malam pekan sah rancang undang undang celaka', '0'),
 (17681, 1, '@UmmiAzzam12', 'Keywords:\nRUU Cipta Kerja\n\nSudahlah rapat larut malam saat weekend demi sahnya RUU Cilaka, ternyata eh ternyata pimpinan DPR mengaku bhw dia selama ini hny mengecek secara acak draft final UU Cipta Kerja. Tnton fkta selengkapnya dlm video serba-serbi pagi ini di YouTube MMC...', 'keywords rancang undang undang cipta kerja rapat larut malam pekan sah rancang undang undang celaka pimpin dewan wakil rakyat aku ecek acak draf final undang undang cipta kerja tonton fakta lengkap video serba serbi pagi youtube mmc', '0'),
 (17682, 1, '@AZahiduddin', 'Ketua DPR: Draft RUU Cipta Kerja Hanya Dicek Acak, World Bank Justru Memujinya? | Serba-serbi MMC\n\nDemi sahnya RUU Cilaka ini, ternyata eh ternyata pimpinan DPR mengaku bahwa dia selama ini hanya mengecek secara acak draft final UU Cipta Kerja.Ketua DPR: Draft RUU Cipta Kerja Hanya Dicek Acak, World Bank Justru...\nPengesahan UU Cipta Kerja sudah dua minggu berlalu. Sudahlah rapat larut malam saat weekend demi sahnya RUU Cilaka ini, ternyata eh ternyata pimpinan DPR men...\nyoutube.com', 'ketua dewan wakil rakyat draf rancang undang undang cipta kerja cek acak dunia bank puji serba serbi mmc sah rancang undang undang celaka pimpin dewan wakil rakyat aku ecek acak draf final undang undang cipta kerja ketua dewan wakil rakyat draf rancang undang undang cipta kerja cek acak dunia bank kesah undang undang cipta kerja minggu rapat larut malam pekan sah rancang undang undang celaka pimpin dewan wakil rakyat men', '0'),
@@ -330,7 +472,7 @@ INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `cl
 (17793, 1, '@Pandaaaeye', 'Masalah regulasi dan investasi coba diselesaikan melalui RUU Cipta Kerja. #OmnibusLawBangunBangsaDari \nemma', 'regulasi investasi coba selesai rancang undang undang cipta kerja', '1'),
 (17794, 1, '@boedidd', 'Membalas \n@tempodotcoDaftar Pasal Bermasalah dan Kontroversi Omnibus Law RUU Cipta Kerja https://tirto.id/f5AU?utm_source=Twitter&utm_medium=Share… via \n@tirtoid', 'balas pasal masalah kontroversi omnibus law rancang undang undang cipta kerja', '0'),
 (17795, 1, '@lbh_Amin', 'Banyak pasal dalam #RUUCiptaKerja yang arahnya menarik kewenangan daerah ke pemerintah pusat, sehingga menjauhkan partisipasi masyarakat di daerah. #RUUCiptaKerja memuat banyak pasal ‘blanko kosong’ yang bisa diisi pemerintah melalui pembentukan peraturan pemerintah.\n#lbhamin', 'pasal arah tarik wenang daerah perintah pusat jauh partisipasi masyarakat daerah muat pasal blanko kosong isi perintah bentuk atur perintah', '0');
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (17796, 1, '@SINDOnews', 'Pantas Investor Sepi, Rupanya ini Biang Keladinya... #8ukaSindonews #BangkitdariPandemi #ruuciptakerjaPantas Investor Sepi, Rupanya ini Biang Keladinya...\nDaya saing indonesia dalam menarik investasi dinilai paling rumit di dunia. Padahal negeri kita merupakan tempat yang menarik...\nekbis.sindonews.com', 'investor sepi biang keladi investor sepi biang keladi daya saing indonesia tarik investasi nilai rumit dunia negeri tarik ekonomi bisnis', '0'),
 (17797, 1, '@DonjuanX8', 'Untuk UMKM Juga Sangat Di Permudah  Soal Sertifikasi Dll.\nMempercepat Sertifikasi Halal\nRUU Cipta Kerja akan mendorong percepatan dan kepastian dalam proses sertifikasi halal. Bahkan bagi UMKM, ia menyebut biaya sertifikasi akan ditanggung pemerintah.\n#PercayaCiptaKerja', 'usaha mikro tengah mudah sertifikasi dll cepat sertifikasi halal rancang undang undang cipta kerja dorong cepat pasti proses sertifikasi halal usaha mikro tengah sebut biaya sertifikasi tanggung perintah', '1'),
 (17798, 1, '@agustina2020nov', 'Membalas \n@agustina2020nov\n @jokowi\n dan \n@KemnakerRI2. Harus ada NIB.\nDua syarat diatas aja bikin saya sudah tidak bisa bikin usaha sama sekali.\nJadi apakah RUU cipta kerja ini memang mau menyejahterakan seperti saya atau hanya yg punya2 duit?Mohon pentunjuknya Pak ', 'balas nib syarat atas bikin bikin usaha rancang undang undang cipta kerja sejahtera duit mohon tunjuk', '0'),
@@ -443,7 +585,7 @@ INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `cl
 (17905, 1, '@stafsuscolonial', 'ISIS tolak ruu cipta kerja?\nom ngabalin ini lucu deh, ISIS itu kalo mau kerja, gajinya mahal\n\nisis mana mau digaji umrTweet Kutipan\nIndonesiaToday\n@idtodayco\n · 18 Okt\nNgabalin: Waspadai Paham ISIS Gentayangan di Penolakan UU Ciptaker https://news.idtoday.co/ngabalin-waspadai-paham-isis-gentayangan-di-penolakan-uu-ciptaker/…', 'isis tolak rancang undang undang cipta kerja om ngabalin lucu deh isis kerja gaji mahal isis gaji umr tweet kutip indonesia today oktober ngabalin waspada paham isis gentayang tolak undang undang cipta kerja', '0'),
 (17906, 1, '@BpnAtr', '#Repost \n@kementerian\n.atrbpn (\n@get_repost\n)\nHalo #SobATRBPN Sofyan A. Djalil Menteri ATR/Kepala BPN yg menjadi salah satu pencetus lahirnya RUU Cipta Kerja, berbagi informasi nih dengan Deddy Corbuzier dikanal YouTube \n@mastercorbuzier\n \n#ATRBPNMajudanModern', 'atrbpn halo sofyan a djalil menteri kepala badan tahan nasional salah cetus lahir rancang undang undang cipta kerja bagi informasi deddy corbuzier kanal youtube', '1'),
 (17907, 1, '@AriestaRiico_', 'Ada 10 menteri bersama Menteri Koordinator Bidang Perekonomian yang ditugaskan untuk mewakili presiden dalam pembahasan RUU Cipta Kerja di DPR RI\nWaspada Korona\n#CiptaKerjaBangunBangsa', 'menteri menteri koordinator bidang ekonomi tugas wakil presiden bahas rancang undang undang cipta kerja dewan wakil rakyat rakyat indonesia waspada corona', '1');
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (17908, 1, '@AriestaRiico_', 'RUU Cipta Kerja akhirnya sah menjadi undang-undang, setelah disepakati dalam pengambilan keputusan tingkat II dalam rapat paripurna DPR RI\nWaspada Korona\n#CiptaKerjaBangunBangsa', 'rancang undang undang cipta kerja sah undang undang pakat ambil putus tingkat rapat paripurna dewan wakil rakyat rakyat indonesia waspada corona', '1'),
 (17909, 1, '@LILApama2011', 'Walau sering dianggap sebagai kelompok yang paling keras menolak Omnibus Law khususnya RUU Cipta Kerja, serikat pekerja masih memiliki obyektifitas dalam memandang klausul-klausul dalam aturan ‘sapu jagat’ tersebut.Serikat Pekerja Dukung Omnibus Law, Ini Syaratnya - RMOLACEH\nWalau sering dianggap sebagai kelompok yang paling keras menolak Omnibus Law khususnya RUU Cipta Kerja, serikat pekerja masih memiliki obyektifitas dalam memandang klausul-klausul dalam aturan ‘sapu...\nrmolaceh.id', 'anggap kelompok keras tolak omnibus law rancang undang undang cipta kerja serikat kerja milik objektivitas pandang klausul klausul atur sapu jagat serikat kerja dukung omnibus law syarat rmol acel anggap kelompok keras tolak omnibus law rancang undang undang cipta kerja serikat kerja milik objektivitas pandang klausul klausul atur sapu rmol acel', '1'),
 (17910, 1, '@unyubangetz', 'RUU Cipta Kerja memang mencoba untuk memfasilitasi pergeseran di bidang investasi dan ketenagakerjaan di masa yang akan datang. #RakyatBersamaOmnibusLawDari \nLr', 'rancang undang undang cipta kerja coba fasilitas geser bidang investasi ketenagakerjaan lr', '1'),
@@ -561,7 +703,7 @@ INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `cl
 (18022, 1, '@ppyjnt', 'Cukup RUU cipta kerja wae seng mbok tolak, tresnoku ojo yo mas ', 'rancang undang undang cipta kerja seng tolak tresna ya mas', '1'),
 (18023, 1, '@YeWahyudi', ' DISKUSI AKTUAL \n*Telaah Kritis UU Omnibus Law Cipta Kerja dan Solusi Islam*\n\nMinggu, 18 Oktober 2020\nPukul 08.00--selesai\n\nPengesahan Omnibus Law RUU Cipta Kerja pada Senin 5 Oktober lalu mendapat penolakan dari berbagai elemen masyarakat, dalam bentuk demonstrasi', 'diskusi aktual telaah kritis undang undang omnibus law cipta kerja solusi islam minggu oktober selesai kesah omnibus law rancang undang undang cipta kerja senin oktober tolak elemen masyarakat bentuk demonstrasi', '1'),
 (18024, 1, '@___Dande___', 'Skandal DPR dan Pemerintah Jokowi Mengesahkan RUU Cipta Kerja - http://Tirto.ID https://tirto.id/f5UX?utm_source=Twitter&utm_medium=Share…Tirto.ID - Jernih Mengalir Mencerahkan\nMedia online terkini. Menyajikan tulisan dan infografik berita nasional dan internasional serta analisis berdasarkan fakta dan data.\ntirto.id', 'skandal dewan wakil rakyat perintah jokowi kesah rancang undang undang cipta kerja', '1');
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (18025, 1, '@SonoraFM92', 'Meluruskan 12 HOAX terkait Omnibus Law RUU Cipta Kerja, \nYuk baca dan cermati yang sebenarnya..... \n\n#InfoSonora\nSumber : \n@PerekonomianRI', 'lurus hoax kait omnibus law rancang undang undang cipta kerja ayo baca cermat sumber', '1'),
 (18026, 1, '@Hendrijono4', 'Hadirilah!\n DISKUSI AKTUAL \n*Telaah Kritis UU Omnibus Law Cipta Kerja dan Solusi Islam*\n\nMinggu, 18 Oktober 2020\nPukul 08.00--selesai\n\nPengesahan Omnibus Law RUU Cipta Kerja pada Senin 5 Oktober lalu mendapat penolakan dari berbagai elemen masyarakat, dalam bentuk', 'hadir diskusi aktual telaah kritis undang undang omnibus law cipta kerja solusi islam minggu oktober selesai kesah omnibus law rancang undang undang cipta kerja senin oktober tolak elemen masyarakat bentuk', '1'),
 (18027, 1, '@_rani1603', 'OmnibusLaw RUU Ciptakerja ini disusun sesui dengan janji bapak Jokowi waktu kampanye untuk memangkas birokrasi yg berbelit belit dalam perijinan usaha \n#WBIndonesiaReadyForBusiness\n#BarisanProKerja\n#CiptakerjaSejahtera', 'omnibus law rancang undang undang cipta kerja susun sesuai janji jokowi kampanye mangkas birokrasi belit belit izin usaha', '1'),
@@ -685,7 +827,7 @@ INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `cl
 (18145, 1, '@AGAMnSERE', 'Sedang membaca RUU cipta kerja.. 100 halaman pertama rasanya masih ok', 'baca rancang undang undang cipta kerja halaman oke', '1'),
 (18146, 1, '@yennikwok', 'Membalas \n@ThaikunBotRUU Cipta Kerja is an Indonesian bill, though. The tweet from Philippines is to show solidarity with Indonesia\'s cause.', 'balas cipta kerja an indonesia bill tweet philippines show solidaritas indonesia s', '1'),
 (18147, 1, '@_dailyHY', 'uni students will hold another demonstration in protest of RUU cipta kerja next week. \n\nthe power of people is stronger than people in power. stay safe everyone! Tweet Kutipan\nCNN Indonesia\n@CNNIndonesia\n · 16 Okt\nGagal Temui Jokowi, Mahasiswa Bakal Demo Lagi Pekan Depan https://cnnindonesia.com/nasional/20201016215248-20-559438/gagal-temui-jokowi-mahasiswa-bakal-demo-lagi-pekan-depan?utm_source=twitter&utm_medium=oa&utm_content=cnnindonesia&utm_campaign=cmssocmed…', 'uni murid tahan demonstrasi protes of rancang undang undang cipta kerja next minggu power of orang orang kuat orang orang power aman orang tweet kutip cnn indonesia oktober gagal temu jokowi mahasiswa demo pekan', '0');
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (18148, 1, '@Mtuhasan02', 'Nah kenapa baru sekarang pak \"GN\" menyadari bahwa penting dan sgt menguntungkan RUU Cipta Kerja inih.kemarin kemana aja??\n\nCoba dari awal anda berpolitik yg santun,edukatif,dan membangun tentunya banyak yg respack sama anda.\n\nOmnibuslaw Keren\n#OmnibusLawPerkuatUMKM', 'sadar untung rancang undang undang cipta kerja kemarin mana coba politik santun edukatif bangun respek omnibus law keren', '0'),
 (18149, 1, '@n1ckeff', 'Penting nih...\nSimak sampai habis video Bang Hotman Paris membantah  video pelintiran tentang RUU Cipta Kerja\nOmnibuslaw Keren\n#OmnibusLawPerkuatUMKM0:51\n711 tayangan', 'simak habis video bang hotman paris ban video pelintir rancang undang undang cipta kerja omnibus law keren tayang', '1'),
 (18150, 1, '@koboyngalam', 'MELAWAN SKANDAL OMNIBUS LAW, REZIM DAN SISTEM : PEMBANGKANGAN SIPIL DAN REVOLUSI POLITIK\n.\nhttps://trenopini.com/2020/10/melawan-skandal-omnibus-law-rezim-dan.html?m=1…\n.\nRancangan Undang-Undang Cipta Kerja (RUU Ciptaker) resmi disahkan menjadi Undang-Undang (UU) pada hari Se', 'lawan skandal omnibus law rezim sistem bangkang sipil revolusi politik', '1'),
@@ -800,7 +942,7 @@ INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `cl
 (18259, 1, '@KantahKotaPkl', 'Tertuang dalam Keputusan Menteri Koordinator Bidang Perekonomian Nomor 318 Tahun 2019. \n\nSelain itu, Pengharmonisasian RUU oleh Kementerian Hukum dan HAM pun telah dilakukan.\n\n#OmnibusLawTaatProsedur\n#CiptaKerja\n#UntukEkonomiIndonesia', 'tuang putus menteri koordinator bidang ekonomi nomor tahi harmonisasi rancang undang undang menteri hukum hak asai manusia', '1'),
 (18260, 1, '@KantahKotaPkl', '#Repost \n@atr_bpn\n \n\n#Repost \n@perekonomianri\n with make_repost\n・・・\n#Grafikonomi \n\nProsedur Program Legislasi Nasional (Prolegnas) dan pembahasan RUU Cipta Kerja di DPR RI telah ditaati oleh DPR RI, DPD RI, dan Pemerintah. \n\nPembentukan Panitia Penyusunan RUU pun ditaati, yang', 'make repost prosedur program legislasi nasional program legislatif nasional bahas rancang undang undang cipta kerja dewan wakil rakyat rakyat indonesia taat dewan wakil rakyat rakyat indonesia dewan wakil daerah rakyat indonesia perintah bentuk panitia susun rancang undang undang taat', '1'),
 (18261, 1, '@Fajaradi_N', 'Di luar bahasan tentang aspek ketenagakerjaan dan lingkungan dalam RUU Cipta Kerja, gue akan menggarisbawahi penggunaan kata \"cacat\" dalam RUU Cipta Kerja yang bertentangan dengan UU Penyandang Disabilitas.', 'bahas aspek ketenagakerjaan lingkung rancang undang undang cipta kerja garis guna cacat rancang undang undang cipta kerja tentang undang undang sandang disabilitas', '1');
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (18262, 1, '@jpnncom', 'Pemerintah kembali menegaskan lahirnya Omnibus Law UU Ciptaker sudah melalui proses panjang. Penyusunan dan pembahasan melibatkan berbagai stakeholder, termasuk para buruh dan serikat pekerja. #RUUCiptaKerjaSebelum Sampai ke Presiden, RUU Ciptaker Sudah Dibahas Detail\nPemerintah kembali menegaskan lahirnya Omnibus Law UU Ciptaker sudah melalui proses panjang. Penyusunan dan pembahasan melibatkan berbagai stakeholder, ter...\nm.jpnn.com', 'perintah lahir omnibus law undang undang cipta kerja proses susun bahas libat stakeholder buruh serikat kerja presiden rancang undang undang cipta kerja bahas detail perintah lahir omnibus law undang undang cipta kerja proses susun bahas libat stakeholder ter m', '1'),
 (18263, 1, '@kimyohanie29', 'Membalas \n@ekaaepw\n dan \n@chaokui4Btw nonton acara mata najwa gak? Banyak yg minta naskah asli draft uu cipta kerja untuk di post di website resmi negara agar masyarakat bisa mengakses nya secara terbuka loh!! Mbanya gatau ya? Ruu nya sudah disah kan tapi bahkan naskah nya belum bisa diakses.', 'balas tonton acara mata najwa naskah asli draf undang undang cipta kerja post website resmi negara masyarakat akses buka mbak tau ya rancang undang undang sah naskah akses', '0'),
 (18264, 1, '@Sarcasbob', 'Just read the news that actually the world bank supports RUU Ciptakerja in Indonesia, and i don\'t know how to react', 'just baca news dunia bank supports rancang undang undang cipta kerja indonesia selesai t know reaksi', '1'),
@@ -921,7 +1063,7 @@ INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `cl
 (18379, 1, '@cah_legend', 'Membalas \n@ZAEffendyOmnibus Law RUU Cipta Kerja, Draft Omnibus Law Cipta Kerja telah diserahkan oleh pemerintah kepada DPR RI, Pemerintah meyakini RUU tsb dapat memperkuat perekonomian Indonesia.', 'balas law rancang undang undang cipta kerja draf omnibus law cipta kerja serah perintah dewan wakil rakyat rakyat indonesia perintah rancang undang undang kuat ekonomi indonesia', '1'),
 (18380, 1, '@wa_puspa', '\"Dengan RUU Cipta Kerja kita harapkan adanya perubahan struktur ekonomi untuk mendorong pertumbuhan ekonomi dan perluasan kesempatan kerja,\" #RakyatButuhUUCiptaKerja', 'rancang undang undang cipta kerja harap ubah struktur ekonomi dorong tumbuh ekonomi luas sempat kerja', '1'),
 (18381, 1, '@LukiLukita2', 'Tidak ada PHK yang dilakukan secara semena-mena dan jaminan sosial pun tidak dihilangkan\n\n#RUUCiptaKerja', 'phk semena mena jamin sosial hilang', '1');
-INSERT INTO `tb_dataset` (`id_dataset`, `id_admin`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
+INSERT INTO `tb_dataset` (`id_dataset`, `id_user`, `user_account`, `tweet`, `clean_tweet`, `sentimen`) VALUES
 (18382, 1, '@mailbucin3', 'RUU Cipta Kerja untuk mempercepat perekonomian di Indonesia.\n\nAtasi Pandemi\n#RakyatButuhUUCiptaKerjaTweet Kutipan\nBHINNEKATUNGGALIKA\n@tjhinfar21\n · 16 Okt\nCIKAL BAKAL LAHIRNYA UU CIPTA KERJA\n\n1.Berawal dari pidato Presiden @jokowi sehari setelah pelantikan\nAda 5 poin yg menjadi fokus utama beliau.\nDalam pidatonya beliau berulang kali menyampaikan dgn keras dan tegas\n\nHAJAR..!!! KEJAR..!!! \nAtasi Pandemi\n#RakyatButuhUUCiptaKerja\nTampilkan utas ini', 'rancang undang undang cipta kerja cepat ekonomi indonesia atas pandemi kutip bhinneka tunggal ika oktober cikal lahir undang undang cipta kerja pidato presiden hari lantik poin fokus utama beliau pidato beliau ulang kali keras hajar kejar atas pandemi tampil utas', '1'),
 (18383, 1, '@denni_loyz', 'Pihak yang selama ini menolak RUU Cipta Kerja nantinya akan menjadi public enemy. Pasalnya, ada jutaan masyarakat yang membutuhkan pekerjaan akibat terdampak Covid-19 ini.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 'tolak rancang undang undang cipta kerja publik enemy pasal juta masyarakat butuh kerja akibat dampak covid atas pandemi', '1'),
 (18384, 1, '@denni_loyz', 'Prabowo mengaku sejak awal telah menginstruksikan Fraksi Gerindra di Dewan Perwakilan Rakyat untuk meneliti RUU Cipta Kerja tiap klaster hingga pasalnya.\nAtasi Pandemi\n#RakyatButuhUUCiptaKerja', 'prabowo aku instruksi fraksi gerindra dewan wakil rakyat teliti rancang undang undang cipta kerja kluster pasal atas pandemi', '1'),
@@ -3230,23 +3372,17 @@ INSERT INTO `tb_features` (`id_feature`, `kata`, `df`, `idf`) VALUES
 --
 
 --
--- Indexes for table `tb_admin`
+-- Indexes for table `tb_user`
 --
-ALTER TABLE `tb_admin`
-  ADD PRIMARY KEY (`id_admin`);
-
---
--- Indexes for table `tb_confusmatrix`
---
-ALTER TABLE `tb_confusmatrix`
-  ADD PRIMARY KEY (`id_confusmatrix`);
+ALTER TABLE `tb_user`
+  ADD PRIMARY KEY (`id_user`);
 
 --
 -- Indexes for table `tb_dataset`
 --
 ALTER TABLE `tb_dataset`
   ADD PRIMARY KEY (`id_dataset`),
-  ADD KEY `tb_dataset_FK` (`id_admin`);
+  ADD KEY `tb_dataset_FK` (`id_user`);
 
 --
 -- Indexes for table `tb_features`
@@ -3259,16 +3395,10 @@ ALTER TABLE `tb_features`
 --
 
 --
--- AUTO_INCREMENT for table `tb_admin`
+-- AUTO_INCREMENT for table `tb_user`
 --
-ALTER TABLE `tb_admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tb_confusmatrix`
---
-ALTER TABLE `tb_confusmatrix`
-  MODIFY `id_confusmatrix` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+ALTER TABLE `tb_user`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tb_dataset`
@@ -3283,6 +3413,23 @@ ALTER TABLE `tb_features`
   MODIFY `id_feature` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28622;
 
 --
+-- Indexes for table `tb_anaysisresult`
+--
+ALTER TABLE `tb_anaysisresult`
+  ADD PRIMARY KEY (`id_anaysisresult`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tb_anaysisresult`
+--
+ALTER TABLE `tb_anaysisresult`
+  MODIFY `id_anaysisresult` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1474;
+COMMIT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -3290,7 +3437,7 @@ ALTER TABLE `tb_features`
 -- Constraints for table `tb_dataset`
 --
 ALTER TABLE `tb_dataset`
-  ADD CONSTRAINT `tb_dataset_FK` FOREIGN KEY (`id_admin`) REFERENCES `tb_admin` (`id_admin`);
+  ADD CONSTRAINT `tb_dataset_FK` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
