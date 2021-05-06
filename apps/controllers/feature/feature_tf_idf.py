@@ -68,14 +68,14 @@ class TfidfFeature(object):
         TF_Dict = self.__calc_count_Dict(data["tf_dict"])
         IDF_Dict = self.__calc_IDF_Dict(len(data), TF_Dict)
         for key in IDF_Dict:
-            row_data = Feature(kata=key, df=TF_Dict[key], idf=IDF_Dict[key])
+            row_data = Feature(kata=key, df=TF_Dict[key], idf=float(IDF_Dict[key]))
             db.session.add(row_data)
             db.session.commit()
 
     def calc_tf_idf(self, data):
-        data['tweet_token'] = data['clean_tweet'].apply(self.__tokenize)
-        data['tf_dict'] = data['tweet_token'].apply(self.__calc_TF_Dict)
-        data['tfidf_dict'] = data['tf_dict'].apply(self.__calc_TF_IDF)
-        tfidf_vector = [self.__calc_TF_IDF_Vec(row) for row in data['tfidf_dict']]
+        data_token = data.apply(self.__tokenize)
+        data_tf_dict = data_token.apply(self.__calc_TF_Dict)
+        data_tfidf_dict = data_tf_dict.apply(self.__calc_TF_IDF)
+        tfidf_vector = [self.__calc_TF_IDF_Vec(row) for row in data_tfidf_dict]
         return tfidf_vector
 

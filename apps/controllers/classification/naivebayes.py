@@ -8,10 +8,10 @@ class NaiveBayes(object):
     def _predict(self, x_test):
         # Calculate posterior for each class
         posteriors = []
-        for idx, c in enumerate(self._classes):
+        for idx, _ in enumerate(self._classes):
             prior_c = np.log(self._priors[idx])
-            likelihoods_c = self._calc_likelihood(self._likelihoods[idx, :], x_test)
-            posteriors_c = np.sum(likelihoods_c) + prior_c
+            conditionals_c = self._calc_likelihood(self._conditionals[idx, :], x_test)
+            posteriors_c = np.sum(conditionals_c) + prior_c
             posteriors.append(posteriors_c)
 
         return self._classes[np.argmax(posteriors)]
@@ -25,15 +25,15 @@ class NaiveBayes(object):
         self._classes = np.unique(y_train)
         n_classes = len(self._classes)
 
-        # init: Prior & Likelihood
+        # init: Prior & Conditional
         self._priors = np.zeros(n_classes)
-        self._likelihoods = np.zeros((n_classes, n))
+        self._conditionals = np.zeros((n_classes, n))
 
-        # Get Prior and Likelihood
+        # Get Prior and Conditional
         for idx, c in enumerate(self._classes):
             X_train_c = X_train[c == y_train]
             self._priors[idx] = X_train_c.shape[0] / m
-            self._likelihoods[idx, :] = ((X_train_c.sum(axis=0)) + self.alpha) / (np.sum(X_train_c.sum(axis=0) + self.alpha))
+            self._conditionals[idx, :] = ((X_train_c.sum(axis=0)) + self.alpha) / (np.sum(X_train_c.sum(axis=0) + self.alpha))
 
     def predict(self, X_test):
         return [self._predict(x_test) for x_test in X_test]

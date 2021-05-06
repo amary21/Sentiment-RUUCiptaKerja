@@ -37,28 +37,44 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <!-- CONFUS MATRIX -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Confusion Matrix</h3>
+                </div>
+                <div class="card-body center-block">
+                    <div style="text-align:center">
+                        <img src="{{ imageconfus }}" alt=""
+                            style="min-height: 380px; height: 380px; max-height: 380px; max-width: 100%;">
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <div class="col-md-4">
             <!-- PRIOR DATASET -->
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Datasets</h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="dataset" style="min-height: 230px; height: 230px; max-height: 230px; max-width: 100%;"></canvas>
+                    <canvas id="dataset" style="min-height: 355px; height: 355px; max-height: 355px; max-width: 100%;"></canvas>
                     <div>jumlah seluruh dataset : {{dataset}}</div>
                 </div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <!-- PEMBAGIAN DATASET -->
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Pembagian Dataset</h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="splitdata" style="min-height: 230px; height: 230px; max-height: 230px; max-width: 100%;"></canvas>
+                    <canvas id="splitdata" style="min-height: 355px; height: 355px; max-height: 355px; max-width: 100%;"></canvas>
                     <div>jumlah seluruh dataset : {{dataset}}</div>
                 </div>
                 <!-- /.card-body -->
@@ -75,7 +91,10 @@
                     <h3 class="card-title">Word Cloud</h3>
                 </div>
                 <div class="card-body">
-                    <img src="{{url_for('static', filename='assets/img/word_cloud.png') }}" alt="" style="height:40%; text-align:center">
+                    <div style="text-align:center">
+                        <img src="{{url_for('classification.visual_wordcloud') }}" alt=""
+                            style="min-height: 40%; height: 40%; max-height: 40%; max-width: 100%;">
+                    </div>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -85,7 +104,7 @@
 
     <script>
         function getAnalysisProcess() {
-            const href = Flask.url_for("analysis.analysis_process");
+            const href = Flask.url_for("classification.analysis_process");
 
             Swal.fire({
                 title: 'Are you sure?',
