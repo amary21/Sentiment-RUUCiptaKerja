@@ -4,8 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_jsglue import JSGlue
 from apps.config import Config
+from apps.celery import FlaskCelery
 
 
+celery = FlaskCelery()
 db = SQLAlchemy()
 jsglue = JSGlue()
 login_manager = LoginManager()
@@ -18,6 +20,7 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    celery.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     jsglue.init_app(app)

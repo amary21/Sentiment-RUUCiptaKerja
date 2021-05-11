@@ -30,10 +30,8 @@ def performance(df):
     plt.ylabel("Aktual Label")
     plt.gca().invert_yaxis()
     plt.gca().invert_xaxis()
-    # Convert plot to PNG image
     pngImage = io.BytesIO()
     FigureCanvas(fig).print_png(pngImage)
-    # Encode PNG image to base64 string
     plotconfus = "data:image/png;base64,"
     plotconfus += base64.b64encode(pngImage.getvalue()).decode('utf8')
 
