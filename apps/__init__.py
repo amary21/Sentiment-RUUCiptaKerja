@@ -1,10 +1,14 @@
 # import mysql.connector
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_jsglue import JSGlue
 from apps.config import Config
+from apps.extensions import make_celery, init_celery
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+celery = make_celery()
 db = SQLAlchemy()
 jsglue = JSGlue()
 login_manager = LoginManager()
@@ -13,13 +17,16 @@ login_manager.login_message_category = 'danger'
 login_manager.login_message = 'Anda belum login!'
 
 
-def create_app(config_class=Config):
+def create_app(config_class=Config, **kwargs):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
     db.init_app(app)
     login_manager.init_app(app)
     jsglue.init_app(app)
+
+    if kwargs.get("celery"):
+        init_celery(kwargs.get("celery"), app)
 
     from apps.controllers.accounts.routes import accounts
     from apps.controllers.dashboards.routes import dashboards

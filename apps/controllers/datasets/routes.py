@@ -1,7 +1,7 @@
-import io
+import os
 import pandas as pd
 
-from apps import db
+from apps import db, celery, ROOT_DIR
 
 from apps.models.dataset import Dataset
 from apps.models.feature import Feature
@@ -20,25 +20,34 @@ datasets = Blueprint('datasets', __name__)
 @datasets.route('/dataset', methods=['GET', 'POST'])
 @login_required
 def datatrain():
-    print('id user', current_user.id_user)
     data = Dataset.query.all()
-    preprocessing = Preprocessing()
 
     form_adddataset = DataTrainForm()
     form_updatedataset = UpdateDataTrainForm()
     form_importdataset = DataCSVForm()
     form_viewdataset = ViewDataTrainForm()
 
-    if form_importdataset.validate_on_submit():
-        file_name = form_importdataset.csv_file.data
-        stream = io.StringIO(
-            file_name.stream.read().decode("UTF8"), newline=None)
-        preprocessing.from_csv(stream, current_user.id_user)
-        flash('Dataset has been imported', 'success')
-        return jsonify({'message':'success'})
-        # return redirect(url_for('datasets.datatrain'))
-
     return render_template('dataset.html', contentheader='Dataset', menu='Dataset', menu_type='sidebar', dataset=data, form_adddataset=form_adddataset, form_updatedataset=form_updatedataset, form_importdataset=form_importdataset, form_viewdata=form_viewdataset)
+
+
+@datasets.route('/dataset/upload', methods=['POST'])
+@login_required
+def datatrain_upload():
+    stream = request.files['csv_file']
+    df = pd.read_csv(stream)
+    df.to_csv(ROOT_DIR + '/static/assets/files/datasets.csv')
+    result = task_upload.delay()
+    result.wait()
+    flash('Dataset has been imported', 'success')
+    return jsonify({'message': 'success'})
+
+
+@celery.task()
+def task_upload():
+    dir_path = os.path.abspath(ROOT_DIR + '/static/assets/files/datasets.csv')
+    preprocessing = Preprocessing()
+    preprocessing.from_csv(dir_path, 1)
+    return 'sukses bro'
 
 
 @datasets.route('/dataset/deleteall')
@@ -50,6 +59,7 @@ def datatrain_deleteall():
     db.session.commit()
     flash('Dataset has been deleted!', 'success')
     return redirect(url_for('datasets.datatrain'))
+
 
 @datasets.route('/dataset/download')
 @login_required

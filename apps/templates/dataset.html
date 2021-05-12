@@ -86,7 +86,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form role="form" action="" method="post" enctype="multipart/form-data">
+                <form name="uploadfile" id="uploadfile" enctype="multipart/form-data">
                     {{form_importdataset.hidden_tag()}}
                     <div class="modal-body">  
                         <div class="form-group">
@@ -399,36 +399,43 @@
         $('.modal-body #view_sentiment').val(label);
     });
 
-    $(document).on("click", "#csv_submit", function(){
-        $('#modal-import-csv').modal('hide');
-        // let timerInterval
-        Swal.fire({
-            title: 'Import Data Is In Process!',
-            html: 'This process may take a while, please wait...',
-            // timer: 2000,
-            allowOutsideClick: false,
-            timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading()
-                // timerInterval = setInterval(() => {
-                // const content = Swal.getContent()
-                // if (content) {
-                //     const b = content.querySelector('b')
-                //     if (b) {
-                //     b.textContent = Swal.getTimerLeft()
-                //     }
-                // }
-                // }, 100)
-            },
-            // willClose: () => {
-            //     clearInterval(timerInterval)
-            // }
-        }).then((result) => {
-        /* Read more about handling dismissals below */
-            if (result.dismiss === Swal.DismissReason.timer) {
-                console.log('I was closed by the timer')
-            }
-        })
+    $(document).ready(function(){
+        $("form[name='uploadfile']").on('submit', function(event){
+            console.log('task 1')
+            event.preventDefault();
+
+            $('#modal-import-csv').modal('hide');
+            console.log('task 2')
+            var form_data = new FormData($(this)[0]);
+            console.log('task 3')
+            $.ajax({
+                type: 'POST',
+                url: '/dataset/upload',
+                data: form_data,
+                processData: false, 
+                contentType: false,
+                beforeSend: function(){
+                    Swal.fire({
+                        title: 'Import Data Is In Process!',
+                        html: 'This process may take a while, please wait...',
+                        allowOutsideClick: false,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
+                },
+                success: function(data) {
+                    console.log(data.message)
+                    if(data.message === 'success'){
+                        document.location.href = Flask.url_for("datasets.datatrain");
+                    }
+                },
+                error: function (request, status, error) {
+                    console.log(error);
+                }
+            });
+        });
     });
 </script>
 {% endblock content_sidebar %}
