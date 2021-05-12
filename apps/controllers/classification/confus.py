@@ -1,4 +1,3 @@
-import os
 from wordcloud import WordCloud, STOPWORDS
 from sklearn.metrics import confusion_matrix
 import seaborn as sn
