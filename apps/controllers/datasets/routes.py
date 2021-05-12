@@ -10,7 +10,7 @@ from apps.models.analysisresult import AnalysisResult
 from apps.controllers.datasets.form import DataTrainForm, UpdateDataTrainForm, DataCSVForm, ViewDataTrainForm
 from apps.controllers.datasets.preprocessing import Preprocessing
 
-from flask import Blueprint, render_template, url_for, flash, redirect, request, make_response
+from flask import Blueprint, render_template, url_for, flash, redirect, request, make_response, jsonify
 from flask_login import current_user, login_required
 
 
@@ -35,7 +35,8 @@ def datatrain():
             file_name.stream.read().decode("UTF8"), newline=None)
         preprocessing.from_csv(stream, current_user.id_user)
         flash('Dataset has been imported', 'success')
-        return redirect(url_for('datasets.datatrain'))
+        return jsonify({'message':'success'})
+        # return redirect(url_for('datasets.datatrain'))
 
     return render_template('dataset.html', contentheader='Dataset', menu='Dataset', menu_type='sidebar', dataset=data, form_adddataset=form_adddataset, form_updatedataset=form_updatedataset, form_importdataset=form_importdataset, form_viewdata=form_viewdataset)
 
