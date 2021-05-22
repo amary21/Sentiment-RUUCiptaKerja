@@ -169,6 +169,3 @@ class Preprocessing(object):
                 
                 db.session.add(row_data)
                 db.session.commit()
-
-    # def from_text(self, tweet):
-    #     return 0
