@@ -1,6 +1,6 @@
-from apps import create_app
+from apps import create_app, celery
 
-app = create_app()
+app = create_app(celery=celery)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)

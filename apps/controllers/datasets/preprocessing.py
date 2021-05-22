@@ -153,7 +153,6 @@ class Preprocessing(object):
         df = df.dropna(subset=["label", "tweet_clean"])
 
         for i, row in df.iterrows():
-            print(row['label'])
             tostring = ''
             if row['label'] == 1.0:
                 tostring = '1'
@@ -170,6 +169,3 @@ class Preprocessing(object):
                 
                 db.session.add(row_data)
                 db.session.commit()
-
-    # def from_text(self, tweet):
-    #     return 0

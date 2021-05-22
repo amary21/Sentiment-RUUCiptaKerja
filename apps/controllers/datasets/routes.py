@@ -1,8 +1,7 @@
-import io
-import numpy as np
+import os
 import pandas as pd
 
-from apps import db
+from apps import db, celery, ROOT_DIR
 
 from apps.models.dataset import Dataset
 from apps.models.feature import Feature
@@ -11,7 +10,7 @@ from apps.models.analysisresult import AnalysisResult
 from apps.controllers.datasets.form import DataTrainForm, UpdateDataTrainForm, DataCSVForm, ViewDataTrainForm
 from apps.controllers.datasets.preprocessing import Preprocessing
 
-from flask import Blueprint, render_template, url_for, flash, redirect, request, make_response
+from flask import Blueprint, render_template, url_for, flash, redirect, request, make_response, jsonify
 from flask_login import current_user, login_required
 
 
@@ -21,24 +20,56 @@ datasets = Blueprint('datasets', __name__)
 @datasets.route('/dataset', methods=['GET', 'POST'])
 @login_required
 def datatrain():
-    print('id user', current_user.id_user)
     data = Dataset.query.all()
-    preprocessing = Preprocessing()
 
     form_adddataset = DataTrainForm()
     form_updatedataset = UpdateDataTrainForm()
     form_importdataset = DataCSVForm()
     form_viewdataset = ViewDataTrainForm()
 
-    if form_importdataset.validate_on_submit():
-        file_name = form_importdataset.csv_file.data
-        stream = io.StringIO(
-            file_name.stream.read().decode("UTF8"), newline=None)
-        preprocessing.from_csv(stream, current_user.id_user)
-        flash('Dataset has been imported', 'success')
-        return redirect(url_for('datasets.datatrain'))
-
     return render_template('dataset.html', contentheader='Dataset', menu='Dataset', menu_type='sidebar', dataset=data, form_adddataset=form_adddataset, form_updatedataset=form_updatedataset, form_importdataset=form_importdataset, form_viewdata=form_viewdataset)
+
+
+@datasets.route('/dataset/upload', methods=['POST'])
+@login_required
+def datatrain_upload():
+    stream = request.files['csv_file']
+    df = pd.read_csv(stream)
+    df.to_csv(ROOT_DIR + '/static/assets/files/datasets.csv')
+    result = task_upload.apply_async()
+    print(result)
+    # result.wait()
+    flash('Dataset has been imported', 'success')
+    return jsonify({}), 202, {'Location': url_for('datasets.dataset_upload_stat', task_id=result.id)}
+
+
+@datasets.route('/dataset/upload/status/<task_id>', methods=['GET'])
+def dataset_upload_stat(task_id):
+    task = task_upload.AsyncResult(task_id)
+    if task.state == 'PENDING':
+        response = {
+            'state': task.state,
+        }
+    elif task.state != 'FAILURE':
+        response = {
+            'state': task.state,
+        }
+        if 'result' in task.info:
+            response['result'] = task.info['result']
+    else:
+        # something went wrong in the background job
+        response = {
+            'state': task.state,
+        }
+    return jsonify(response)
+    
+
+@celery.task()
+def task_upload():
+    dir_path = os.path.abspath(ROOT_DIR + '/static/assets/files/datasets.csv')
+    preprocessing = Preprocessing()
+    preprocessing.from_csv(dir_path, 1)
+    return {'result': 'success'}
 
 
 @datasets.route('/dataset/deleteall')
@@ -50,6 +81,7 @@ def datatrain_deleteall():
     db.session.commit()
     flash('Dataset has been deleted!', 'success')
     return redirect(url_for('datasets.datatrain'))
+
 
 @datasets.route('/dataset/download')
 @login_required
