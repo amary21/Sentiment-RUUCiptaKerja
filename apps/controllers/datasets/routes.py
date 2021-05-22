@@ -36,18 +36,40 @@ def datatrain_upload():
     stream = request.files['csv_file']
     df = pd.read_csv(stream)
     df.to_csv(ROOT_DIR + '/static/assets/files/datasets.csv')
-    result = task_upload.delay()
-    result.wait()
+    result = task_upload.apply_async()
+    print(result)
+    # result.wait()
     flash('Dataset has been imported', 'success')
-    return jsonify({'message': 'success'})
+    return jsonify({}), 202, {'Location': url_for('datasets.dataset_upload_stat', task_id=result.id)}
 
+
+@datasets.route('/dataset/upload/status/<task_id>', methods=['GET'])
+def dataset_upload_stat(task_id):
+    task = task_upload.AsyncResult(task_id)
+    if task.state == 'PENDING':
+        response = {
+            'state': task.state,
+        }
+    elif task.state != 'FAILURE':
+        response = {
+            'state': task.state,
+        }
+        if 'result' in task.info:
+            response['result'] = task.info['result']
+    else:
+        # something went wrong in the background job
+        response = {
+            'state': task.state,
+        }
+    return jsonify(response)
+    
 
 @celery.task()
 def task_upload():
     dir_path = os.path.abspath(ROOT_DIR + '/static/assets/files/datasets.csv')
     preprocessing = Preprocessing()
     preprocessing.from_csv(dir_path, 1)
-    return 'sukses bro'
+    return {'result': 'success'}
 
 
 @datasets.route('/dataset/deleteall')

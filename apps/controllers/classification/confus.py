@@ -12,7 +12,6 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 
 def performance(df):
-    print("DATAFRAME",df)
     if df.empty:
         return 0,0,0,""
     else:

@@ -405,9 +405,7 @@
             event.preventDefault();
 
             $('#modal-import-csv').modal('hide');
-            console.log('task 2')
             var form_data = new FormData($(this)[0]);
-            console.log('task 3')
             $.ajax({
                 type: 'POST',
                 url: '/dataset/upload',
@@ -425,11 +423,9 @@
                         },
                     })
                 },
-                success: function(data) {
-                    console.log(data.message)
-                    if(data.message === 'success'){
-                        document.location.href = Flask.url_for("datasets.datatrain");
-                    }
+                success: function(data, status, request) {
+                    status_url = request.getResponseHeader('Location');
+                    update_progress(status_url);
                 },
                 error: function (request, status, error) {
                     console.log(error);
@@ -437,5 +433,22 @@
             });
         });
     });
+
+    function update_progress(status_url) {
+        $.getJSON(status_url, function(data) {
+            console.log("location", status_url);
+            if (data['state'] != 'PENDING' && data['state'] != 'PROGRESS') {
+                if ('result' in data) {
+                    // show result
+                    document.location.href = Flask.url_for("datasets.datatrain");
+                }
+            }
+            else {
+                setTimeout(function() {
+                    update_progress(status_url);
+                }, 2000);
+            }
+        });
+    }
 </script>
 {% endblock content_sidebar %}
