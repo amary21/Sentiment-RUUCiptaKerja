@@ -1,3 +1,6 @@
+from flask import Response, redirect, request, url_for
+from typing import Optional
+from http import HTTPStatus
 from celery import Celery
 
 def make_celery(app_name=__name__):
@@ -14,3 +17,9 @@ def init_celery(celery, app):
     celery.Task = ContextTask
 
 
+def https_redirect() -> Optional[Response]:
+    if request.scheme == 'http':
+        return redirect(url_for(request.endpoint,
+                                _scheme='https',
+                                _external=True),
+                        HTTPStatus.PERMANENT_REDIRECT)

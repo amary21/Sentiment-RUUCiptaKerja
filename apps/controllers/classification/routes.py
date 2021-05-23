@@ -93,12 +93,3 @@ def visual_wordcloud():
     df = pd.read_sql(dataset.statement, db.session.bind)
     imgcloud = cloud(df['clean_tweet'])
     return send_file(imgcloud, mimetype='image/png')
-
-
-@classification.before_request
-def before_request():
-    scheme = request.headers.get('X-Forwarded-Proto')
-    if scheme and scheme == 'http' and request.url.startswith('http://'):
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)

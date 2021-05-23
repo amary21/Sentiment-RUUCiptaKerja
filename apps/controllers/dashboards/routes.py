@@ -21,12 +21,3 @@ def dashboard():
     count_positif_dataset = dataset.filter(Dataset.sentimen == "1").scalar()
     count_feature = db.session.query(func.count(Feature.id_feature)).scalar()
     return render_template('dashboard.html', contentheader='Dashboard', menu='Dashboard', menu_type='sidebar', dataset=count_dataset, neg_dataset=count_negatif_dataset, pos_dataset=count_positif_dataset, feature=count_feature)
-
-
-@dashboards.before_request
-def before_request():
-    scheme = request.headers.get('X-Forwarded-Proto')
-    if scheme and scheme == 'http' and request.url.startswith('http://'):
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)

@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_jsglue import JSGlue
 from apps.config import Config
-from apps.extensions import make_celery, init_celery
+from apps.extensions import make_celery, init_celery, https_redirect
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 celery = make_celery()
@@ -20,6 +20,9 @@ login_manager.login_message = 'Anda belum login!'
 def create_app(config_class=Config, **kwargs):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    if app.env == 'production':
+        app.before_request(https_redirect)
 
     db.init_app(app)
     login_manager.init_app(app)
