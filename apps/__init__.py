@@ -6,7 +6,9 @@ from flask_login import LoginManager
 from flask_jsglue import JSGlue
 from apps.config import Config
 from apps.extensions import make_celery, init_celery, https_redirect
+from dotenv import dotenv_values
 
+config = dotenv_values(".env")
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 celery = make_celery()
 db = SQLAlchemy()
@@ -21,8 +23,10 @@ def create_app(config_class=Config, **kwargs):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    if app.env == 'production':
+    fn = config.get("FLASK_ENV", "development")
+    if fn == 'production':
         app.before_request(https_redirect)
+
 
     db.init_app(app)
     login_manager.init_app(app)
@@ -48,3 +52,12 @@ def create_app(config_class=Config, **kwargs):
     app.register_blueprint(errors)
 
     return app
+
+def run(debug: bool = False, celery: object = None):
+    fn = config.get("FLASK_ENV", "development")
+    if fn == 'production':
+        debug = False
+    else:
+        debug = True
+    
+    create_app(celery=celery).run(debug=debug)
