@@ -22,12 +22,7 @@ login_manager.login_message = 'Anda belum login!'
 def create_app(config_class=Config, **kwargs):
     app = Flask(__name__)
     app.config.from_object(config_class)
-
-    fn = config.get("FLASK_ENV", "development")
-    if fn == 'production':
-        app.before_request(https_redirect)
-
-
+    
     db.init_app(app)
     login_manager.init_app(app)
     jsglue.init_app(app)
@@ -52,12 +47,3 @@ def create_app(config_class=Config, **kwargs):
     app.register_blueprint(errors)
 
     return app
-
-def run(debug: bool = False, celery: object = None):
-    fn = config.get("FLASK_ENV", "development")
-    if fn == 'production':
-        debug = False
-    else:
-        debug = True
-    
-    create_app(celery=celery).run(debug=debug)
