@@ -1,6 +1,4 @@
-from apps import create_app, celery
-
-app = create_app(celery=celery)
+from apps import run, celery
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    run(celery=celery)
