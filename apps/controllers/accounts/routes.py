@@ -57,3 +57,12 @@ def account():
     elif request.method == 'GET':
         form_username.username.data = current_user.username
     return render_template('account.html', contentheader='Account', menu_type='sidebar', form_username=form_username, form_password=form_password)
+
+
+@accounts.before_request
+def before_request():
+    scheme = request.headers.get('X-Forwarded-Proto')
+    if scheme and scheme == 'http' and request.url.startswith('http://'):
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
