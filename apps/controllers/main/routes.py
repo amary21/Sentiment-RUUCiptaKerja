@@ -25,8 +25,11 @@ def index():
 
     dataset = db.session.query(Dataset)
     df = pd.read_sql(dataset.statement, db.session.bind)
+    x_train = 0
+    x_test = 0
 
-    x_train, x_test, _, _ = train_test_split(
-        df['clean_tweet'], df['sentimen'], test_size=0.2)
+    if not df.empty:
+        x_train, x_test, _, _ = train_test_split(
+            df['clean_tweet'], df['sentimen'], test_size=0.2)
     return render_template('index.html', menu_type='topbar', accuracy=accuracy, precision=precision, recall=recall, dataset=count_dataset, dataset_positive=count_positif_dataset, dataset_negative=count_negatif_dataset, data_train=len(x_train), data_test=len(x_test))
 
