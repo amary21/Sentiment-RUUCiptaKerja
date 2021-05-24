@@ -436,7 +436,7 @@
 
     function update_progress(status_url) {
         $.getJSON(status_url, function(data) {
-            console.log("location", status_url);
+            console.log("status", data['state']);
             if (data['state'] != 'PENDING' && data['state'] != 'PROGRESS') {
                 if ('result' in data) {
                     // show result
