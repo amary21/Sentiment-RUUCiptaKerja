@@ -16,18 +16,21 @@ def login():
         return redirect(url_for('dashboards.dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
-        hash_password = hashlib.md5(
-            form.password.data.encode('utf-8')).hexdigest()
-        user = User.query.filter_by(
-            username=form.username.data, password=hash_password).first()
-        if user:
-            print(form.remember.data)
-            login_user(user, remember=form.remember.data)
-            flash(f'Selamat Datang {form.username.data}!', 'success')
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('dashboards.dashboard'))
-        else:
-            flash('Username atau Password Salah!', 'danger')
+        try:
+            hash_password = hashlib.md5(
+                form.password.data.encode('utf-8')).hexdigest()
+            user = User.query.filter_by(
+                username=form.username.data, password=hash_password).first()
+            if user:
+                print(form.remember.data)
+                login_user(user, remember=form.remember.data)
+                flash(f'Selamat Datang {form.username.data}!', 'success')
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('dashboards.dashboard'))
+            else:
+                flash('Username atau Password Salah!', 'danger')
+        except Exception as e:
+            print('login',e)
     return render_template('login.html', contentheader='Login', title='Login', form=form)
 
 
