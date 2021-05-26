@@ -43,7 +43,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Confusion Matrix</h3>
                 </div>
-                <div class="card-body center-block">
+                <div class="card-body center-block table-responsive">
                     <div style="text-align:center">
                         <img src="{{ imageconfus }}" alt=""
                             style="min-height: 380px; height: 380px; max-height: 380px; max-width: 100%;">
@@ -152,14 +152,14 @@
         //chart klasifikasi
         $(function () {
             //DATA
-            var accuracy = {{accuracy}};
-            var precision = {{precision}};
-            var recall = {{recall}};
-            var dataset = {{dataset}};
-            var dataset_positive = {{dataset_positive}};
-            var dataset_negative = {{dataset_negative}};
-            var dataTrain = {{data_train}};
-            var dataTest = {{data_test}};
+            var accuracy = '{{accuracy}}';
+            var precision = '{{precision}}';
+            var recall = '{{recall}}';
+            var dataset = '{{dataset}}';
+            var dataset_positive = '{{dataset_positive}}';
+            var dataset_negative = '{{dataset_negative}}';
+            var dataTrain = '{{data_train}}';
+            var dataTest = '{{data_test}}';
 
             //ACCURACY
             var donutChartCanvas = $('#accuracy').get(0).getContext('2d')

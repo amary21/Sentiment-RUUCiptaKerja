@@ -14,7 +14,7 @@
     {% endwith %}
     {% if data %}
         {% if data_feature %}
-            <a href="javascript:;" onclick="confirmStartFeature({{ data_count }})" style="pointer-events: none; cursor: default;">
+            <a href="javascript:;" onclick="confirmStartFeature('{{ data_count }}')" style="pointer-events: none; cursor: default;">
                 <button type="button" class="btn btn-sm btn-success mb-3" disabled>
                     <i class="fas fa-balance-scale fa-sm mr-1"> Mulai Proses Ekstraksi Feature</i>
                 </button>
@@ -23,7 +23,7 @@
                 <button class="btn btn-sm btn-danger mb-3 ml-1"><i class="fas fa-trash fa-sm"></i> Delete All Feature</button>
             </a>
         {% else %}
-            <a href="javascript:;" onclick="confirmStartFeature({{ data_count }})">
+            <a href="javascript:;" onclick="confirmStartFeature('{{ data_count }}')">
                 <button type="button" class="btn btn-sm btn-success mb-3">
                     <i class="fas fa-balance-scale fa-sm mr-1"> Mulai Proses Ekstraksi Feature</i>
                 </button>
@@ -44,7 +44,7 @@
                 <h3 class="card-title">Data feature</h3>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">
+                <div class="card-body table-responsive">
                 <table id="example2" class="table table-bordered table-hover">
                     <thead>
                         <tr>
