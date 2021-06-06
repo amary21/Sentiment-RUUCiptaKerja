@@ -17,10 +17,6 @@ class TfidfFeature(object):
             preserve_case=False, strip_handles=True, reduce_len=True)
         return tokenizer.tokenize(tweet)
 
-    def __convert_text_list(self, texts):
-        texts = ast.literal_eval(texts)
-        return [text for text in texts]
-
     def __calc_TF_Dict(self, document):
         TF_dict = {}
         for term in document:
@@ -63,7 +59,6 @@ class TfidfFeature(object):
 
     def set_tf_idf_dict(self, data):
         data['tweet_token'] = data['clean_tweet'].apply(self.__tokenize)
-        # data["tweet_list"] = data["tweet_token"].apply(self.__convert_text_list)
         data["tf_dict"] = data['tweet_token'].apply(self.__calc_TF_Dict)
         TF_Dict = self.__calc_count_Dict(data["tf_dict"])
         IDF_Dict = self.__calc_IDF_Dict(len(data), TF_Dict)

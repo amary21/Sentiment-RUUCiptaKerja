@@ -43,8 +43,8 @@ class Preprocessing(object):
         newwords = []
         for word in pattern.findall(tweet):
             # case folding
-            word = word.lower()
 
+            word = word.lower()
             for row in self.kamus:
                 key = row[0]
                 value = row[1]
@@ -84,8 +84,7 @@ class Preprocessing(object):
                           u"\U0001F680-\U0001F6FF"  # transport & map symbols
                           u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                           u"\U00002500-\U00002BEF"  # chinese char
-                          u"\U00002702-\U000027B0"
-                          u"\U00002702-\U000027B0"
+                          u"\U00002702-\U000027B0"  
                           u"\U000024C2-\U0001F251"
                           u"\U0001f926-\U0001f937"
                           u"\U00010000-\U0010ffff"
