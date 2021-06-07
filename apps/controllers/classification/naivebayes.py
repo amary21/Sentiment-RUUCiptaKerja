@@ -37,7 +37,3 @@ class NaiveBayes(object):
 
     def predict(self, X_test):
         return [self._predict(x_test) for x_test in X_test]
-
-    def score(self, X_test, y_test):
-        y_pred = self.predict(X_test)
-        return np.sum(y_pred == y_test)/len(y_test)
