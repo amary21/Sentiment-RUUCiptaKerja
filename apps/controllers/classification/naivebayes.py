@@ -9,21 +9,13 @@ class NaiveBayes(object):
         posteriors = []
         for idx, _ in enumerate(self._classes):
             prior_c = np.log(self._priors[idx])
-<<<<<<< Updated upstream
             conditionals_c = self._calc_conditional(self._conditionals[idx, :], x_test)
-=======
-            conditionals_c = self._calc_conditionals(self._conditionals[idx, :], x_test)
->>>>>>> Stashed changes
             posteriors_c = np.sum(conditionals_c) + prior_c
             posteriors.append(posteriors_c)
 
         return self._classes[np.argmax(posteriors)]
 
-<<<<<<< Updated upstream
     def _calc_conditional(self, cls_cond, x_test):
-=======
-    def _calc_conditionals(self, cls_cond, x_test):
->>>>>>> Stashed changes
         return np.log(cls_cond) * x_test
 
     def fit(self, X_train, y_train):
