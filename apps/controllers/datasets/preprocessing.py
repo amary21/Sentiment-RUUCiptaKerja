@@ -84,7 +84,7 @@ class Preprocessing(object):
                           u"\U0001F680-\U0001F6FF"  # transport & map symbols
                           u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                           u"\U00002500-\U00002BEF"  # chinese char
-                          u"\U00002702-\U000027B0"  
+                          u"\U00002702-\U000027B0"
                           u"\U000024C2-\U0001F251"
                           u"\U0001f926-\U0001f937"
                           u"\U00010000-\U0010ffff"
@@ -98,7 +98,7 @@ class Preprocessing(object):
                           u"\u3030"
                           "]+", re.UNICODE)
         return re.sub(emoj, '', data)
-    
+
     def __concate_duplicate(self, tweet):
         term = "a" + r"{3}"
         rep = re.sub(term, " 3", tweet)
@@ -141,14 +141,19 @@ class Preprocessing(object):
         raw_data = pd.read_csv(file_name)
         df = pd.DataFrame(raw_data[['user_account', 'tweet', 'label']])
 
-        df['remove_user'] = np.vectorize(self.__remove_pattern)(df['tweet'], "(@\\w*)")
-        df['remove_symbol'] = df["remove_user"].apply(lambda x: np.vectorize(self.__remove_pattern)(x, "(#\\w*)"))
-        df['remove_duplicate_char'] = df['remove_symbol'].apply(self.__concate_duplicate)
-        df['remove_emojis'] = df['remove_duplicate_char'].apply(lambda x: self.__remove_emojis(self.__remove_symbol(x)))
-        
+        df['remove_user'] = np.vectorize(
+            self.__remove_pattern)(df['tweet'], "(@\\w*)")
+        df['remove_symbol'] = df["remove_user"].apply(
+            lambda x: np.vectorize(self.__remove_pattern)(x, "(#\\w*)"))
+        df['remove_duplicate_char'] = df['remove_symbol'].apply(
+            self.__concate_duplicate)
+        df['remove_emojis'] = df['remove_duplicate_char'].apply(
+            lambda x: self.__remove_emojis(self.__remove_symbol(x)))
+
         df.drop_duplicates(subset="remove_emojis", keep='first', inplace=True)
-        
-        df['tweet_clean'] = df['remove_emojis'].apply(lambda x: self.__clean_tweets(x))
+
+        df['tweet_clean'] = df['remove_emojis'].apply(
+            lambda x: self.__clean_tweets(x))
         df = df.dropna(subset=["label", "tweet_clean"])
 
         for i, row in df.iterrows():
@@ -160,11 +165,11 @@ class Preprocessing(object):
 
             if row['tweet_clean'] != "":
                 row_data = Dataset(
-                    id_user=id_user, 
-                    user_account=row['user_account'], 
-                    tweet=row['tweet'], 
-                    clean_tweet=row['tweet_clean'], 
+                    id_user=id_user,
+                    user_account=row['user_account'],
+                    tweet=row['tweet'],
+                    clean_tweet=row['tweet_clean'],
                     sentimen=tostring)
-                
+
                 db.session.add(row_data)
                 db.session.commit()

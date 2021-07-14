@@ -22,8 +22,17 @@ login_manager.login_message = 'Anda belum login!'
 def create_app(config_class=Config, **kwargs):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    
+
     db.init_app(app)
+    db_loc = os.path.exists(os.path.join(os.getcwd(), 'database', 'ruu_ciptaker.db'))
+    if not db_loc :
+        with app.app_context():
+            from apps.models.analysisresult import AnalysisResult
+            from apps.models.dataset import Dataset
+            from apps.models.feature import Feature
+            from apps.models.user import User
+            db.create_all()
+    
     login_manager.init_app(app)
     jsglue.init_app(app)
 

@@ -12,6 +12,14 @@ accounts = Blueprint('accounts', __name__)
 
 @accounts.route('/login', methods=['GET', 'POST'])
 def login():
+    # print(User.query.all() != null)
+    check_admin = User.query.all()
+    print(check_admin)
+    if not check_admin:
+        admin = User(username='admin123', password=hashlib.md5('admin123'.encode('utf-8')).hexdigest())
+        db.session.add(admin)
+        db.session.commit()
+
     if current_user.is_authenticated:
         return redirect(url_for('dashboards.dashboard'))
     form = LoginForm()
@@ -22,7 +30,6 @@ def login():
             user = User.query.filter_by(
                 username=form.username.data, password=hash_password).first()
             if user:
-                print(form.remember.data)
                 login_user(user, remember=form.remember.data)
                 flash(f'Selamat Datang {form.username.data}!', 'success')
                 next_page = request.args.get('next')
