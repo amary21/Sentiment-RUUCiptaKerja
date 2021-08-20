@@ -6,3 +6,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(os.getcwd(), 'database', 'ruu_ciptaker.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'static/assets/files'
+    CELERY_REDIS_MAX_CONNECTIONS = 27
