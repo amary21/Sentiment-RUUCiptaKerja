@@ -4,7 +4,7 @@ from http import HTTPStatus
 from celery import Celery
 
 def make_celery(app_name=__name__):
-    redis_uri = 'redis://0.0.0.0:6379'
+    redis_uri = 'redis://:GzBPzdR3dIQOk8RmvOsR3AS3MrZxhXH7@redis-12334.c246.us-east-1-4.ec2.cloud.redislabs.com:12334'
     return Celery(app_name, backend=redis_uri, broker=redis_uri)
 
 def init_celery(celery, app):
