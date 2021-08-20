@@ -1,4 +1,5 @@
 {% extends 'base/layout.html' %} {% block content_notmenu %}
+
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
@@ -8,67 +9,67 @@
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
-        <p class="login-box-msg">please sign in to access system</p>
+        <p class="login-box-msg">please sign in to access system hyyyyyyyyyyy</p>
         {% with messages = get_flashed_messages(with_categories=true)  %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{category}}">
-                        {{message}}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endfor %}
-            {% endif %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}}">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
         <form action="" method="post">
           {{form.hidden_tag()}}
           <div class="input-group mb-3">
             {% if form.username.errors %}
-              {{ form.username(class="form-control is-invalid")}}
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="fas fa-user-circle"></span>
-                </div>
+            {{ form.username(class="form-control is-invalid")}}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user-circle"></span>
               </div>
-              <div class="invalid-feedback">
-                {% for error in form.username.errors %}
-                  <span>
-                    {{error}}
-                  </span>
-                {% endfor %}
-              </div>
+            </div>
+            <div class="invalid-feedback">
+              {% for error in form.username.errors %}
+              <span>
+                {{error}}
+              </span>
+              {% endfor %}
+            </div>
             {% else %}
-              {{form.username(class="form-control")}}
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="fas fa-user-circle"></span>
-                </div>
+            {{form.username(class="form-control")}}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user-circle"></span>
               </div>
+            </div>
             {% endif %}
           </div>
           <div class="input-group mb-3">
             {% if form.password.errors %}
-              {{form.password(class="form-control is-invalid")}}
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="fas fa-lock"></span>
-                </div>
+            {{form.password(class="form-control is-invalid")}}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
               </div>
-              <div class="invalid-feedback">
-                {% for error in form.password.errors %}
-                  <span>
-                    {{error}}
-                  </span>
-                {% endfor %}
-              </div>
+            </div>
+            <div class="invalid-feedback">
+              {% for error in form.password.errors %}
+              <span>
+                {{error}}
+              </span>
+              {% endfor %}
+            </div>
             {% else %}
-              {{form.password(class="form-control")}}
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="fas fa-lock"></span>
-                </div>
+            {{form.password(class="form-control")}}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
               </div>
+            </div>
             {% endif %}
           </div>
           <div class="row">
@@ -94,4 +95,4 @@
     </div>
   </div>
   <!-- /.login-box -->
-{% endblock content_notmenu %}
+  {% endblock content_notmenu %}
