@@ -13,18 +13,9 @@
 {% endif %}
 {% endwith %}
 
-<button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-import-csv">
-    <i class="fas fa-file-csv fa-sm"></i> Import CSV
-</button>
-{% if dataset %}
-<a href="javascript:;" onclick="confirmAllDelete()">
-    <button class="btn btn-sm btn-danger mb-3 ml-1"><i class="fas fa-trash fa-sm"></i> Delete All Dataset</button>
-</a>
-{% endif %}
-
 <a href="{{url_for('datasets.download_csv')}}">
     <button class="btn btn-sm btn-primary mb-3">
-        <i class="fas fa-download fa-sm"></i> Download CSV
+        <i class="fas fa-download fa-sm"></i> Download Dataset
     </button>
 </a>
 
@@ -76,45 +67,6 @@
 </section>
 <!-- /.content -->
 
-<div class="modal fade" id="modal-import-csv">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Import datasets from CSV file</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form name="uploadfile" id="uploadfile" enctype="multipart/form-data">
-                {{form_importdataset.hidden_tag()}}
-                <div class="modal-body">
-                    <div class="form-group">
-                        {{ form_importdataset.csv_file.label(class="form-control-label") }}
-                        {% if form_importdataset.csv_file.errors %}
-                        {{ form_importdataset.csv_file(class="form-control is-invalid")}}
-                        <div class="invalid-feedback">
-                            {% for error in form_importdataset.csv_file.errors %}
-                            <span>
-                                {{error}}
-                            </span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form_importdataset.csv_file(class="form-control")}}
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    {{ form_importdataset.csv_submit(class="btn btn-primary") }}
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal import dataset-->
 
 <div class="modal fade" id="modal-view-dataset">
     <div class="modal-dialog modal-dialog-centered modal-lg">
